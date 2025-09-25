@@ -37,7 +37,7 @@ endif()
 
 add_custom_target(
     PreBuildTasks
-    COMMAND pre-build.sh ${PROJECT_NAME} ${OS_BUILD_TYPE}
+    COMMAND ${CMAKE_SOURCE_DIR}/pre-build.sh ${PROJECT_NAME} ${OS_BUILD_TYPE}
     COMMENT "Running pre-build script..."
 )
 
@@ -79,22 +79,24 @@ add_dependencies(${PROJECT_NAME} PreBuildTasks)
 
 # Raylib
 add_subdirectory(lib/raylib)
-target_link_libraries(${PROJECT_NAME} raylib)
 
 # Json
 # file(GLOB JSON_FILES "lib/json/*.hpp")
 # add_library(json STATIC ${JSON_FILES})
 # set_target_properties(json PROPERTIES LINKER_LANGUAGE CXX)
-# target_link_libraries(${PROJECT_NAME} json) # ImGui
 
 # Imgui
 file(GLOB IMGUI_FILES "lib/imgui/*.h" "lib/imgui/*.cpp")
 add_library(imgui STATIC ${IMGUI_FILES})
-target_link_libraries(${PROJECT_NAME} imgui)
 
 # rlImGui
 file(GLOB RLIMGUI_FILES "lib/rlimgui/*.h" "lib/rlimgui/*.cpp")
 add_library(rlImGui STATIC ${RLIMGUI_FILES})
+
+# Link libraries
+target_link_libraries(${PROJECT_NAME} raylib)
+# target_link_libraries(${PROJECT_NAME} json)
+target_link_libraries(${PROJECT_NAME} imgui)
 target_link_libraries(${PROJECT_NAME} rlImGui)
 
 ##########################################################################################
@@ -131,6 +133,6 @@ endif()
 add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND post-build.sh ${PROJECT_NAME} ${OS_BUILD_TYPE}
+    COMMAND ${CMAKE_SOURCE_DIR}/post-build.sh ${PROJECT_NAME} ${OS_BUILD_TYPE}
     COMMENT "Running post build script..."
 )
