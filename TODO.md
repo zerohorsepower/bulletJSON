@@ -6,4 +6,3 @@
 - [ ] Save/Load patterns from json files
 - [ ] Convert BulletML patterns
 - [ ] Export Pattern as BulletML xml pattern
-- [ ] Performance option that will disable all ImGui widgets and only render the gameRenderTexture

@@ -86,13 +86,7 @@ void PatternEditor::Editor::ImGuiHelpMarker(const char* desc) {
     }
 }
 
-void PatternEditor::Editor::update() {};
-
-void PatternEditor::Editor::draw() {
-
-    rlImGuiBegin();
-
-    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
+void PatternEditor::Editor::dockspaceSetup() {
 
     // DockSpace setup
     ImGuiID _dockspaceId = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_NoUndocking);
@@ -110,43 +104,96 @@ void PatternEditor::Editor::draw() {
 
         ImGui::DockBuilderFinish(_dockspaceId);
     }
+}
+
+void PatternEditor::Editor::drawMenuBar() {
+
+    if (ImGui::BeginMenuBar()) {
+
+        if (ImGui::BeginMenu("Options")) {
+            if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen)) {
+                
+                Global::isFullscreen = !Global::isFullscreen;
+                ToggleFullscreen();
+            }
+            ImGui::MenuItem("FPS Limit: TODO (60, 120, 144, 240, Unlimited)");
+            ImGui::MenuItem("Texture Filter: TODO (Nearest, Bilinear)");
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Show FPS & Bullet Count", NULL, Global::drawFPS)) Global::drawFPS = !Global::drawFPS;
+
+            if (ImGui::MenuItem("Performance Mode", NULL, Global::isPerformanceMode)) Global::isPerformanceMode = !Global::isPerformanceMode;
+            ImGui::SameLine();
+            ImGuiHelpMarker("The UI causes a lot of FPS loss, to get maximum FPS you can disable the UI by activating this option.");
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("About")) {};
+            
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Help")) {
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMenuBar();
+    }
+}
+
+void PatternEditor::Editor::drawEditor() {
+
+    // TODO
+    static int _currentPattern = 0;
+    ImGui::NewLine();
+    ImGui::Text("PATTERN: ");
+    ImGui::SameLine();
+    ImGui::Combo("##current_pattern", &_currentPattern, "[DDP DaiOuJou] - Hibachi\0[Ketsui] - Boss 2\0\0");
+    ImGui::NewLine();
+
+    if (ImGui::BeginTabBar("Editor", ImGuiTabBarFlags_DrawSelectedOverline)) {
+
+        if (ImGui::BeginTabItem(" Editor ")) {
+            
+            ImGui::NewLine();
+            ImGui::Text("Pattern editor options will be here...");
+
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem(" Json ")) {
+            
+
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem(" BulletML (XML) ")) {
+
+            ImGui::EndTabItem();
+        }
+
+        ImGui::EndTabBar();
+    }
+}
+
+void PatternEditor::Editor::update() {};
+
+void PatternEditor::Editor::draw() {
+
+    rlImGuiBegin();
+
+    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
+
+    dockspaceSetup();
 
     //ImGui::ShowDemoWindow();
 
     ImGui::Begin("Pattern Editor", NULL, ImGuiWindowFlags_MenuBar);
 
-        if (ImGui::BeginMenuBar()) {
-
-            if (ImGui::BeginMenu("Options")) {
-                if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen)) {
-                    
-                    Global::isFullscreen = !Global::isFullscreen;
-                    ToggleFullscreen();
-                }
-                ImGui::MenuItem("FPS Limit: TODO (60, 120, 144, 240, Unlimited)");
-                ImGui::MenuItem("Texture Filter: TODO (Nearest, Bilinear)");
-
-                ImGui::Separator();
-
-                if (ImGui::MenuItem("Show FPS & Bullet Count", NULL, Global::drawFPS)) Global::drawFPS = !Global::drawFPS;
-
-                if (ImGui::MenuItem("Performance Mode", NULL, Global::isPerformanceMode)) Global::isPerformanceMode = !Global::isPerformanceMode;
-                ImGui::SameLine();
-                ImGuiHelpMarker("The UI causes a lot of FPS loss, to get maximum FPS you can disable the UI by activating this option.");
-                
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Help")) {
-
-                ImGui::EndMenu();
-            }
-
-            ImGui::EndMenuBar();
-        }
-
-        ImGui::NewLine();
-        ImGui::Text("Pattern editor options will be here...");
+        drawMenuBar();
+        drawEditor();
 
     ImGui::End();
 
@@ -155,9 +202,6 @@ void PatternEditor::Editor::draw() {
         if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
     
     ImGui::End();
-
-    
-
     rlImGuiEnd();
 };
 

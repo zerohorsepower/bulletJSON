@@ -13,6 +13,11 @@ namespace PatternEditor {
             // ImGui
             void ImGuiHelpMarker(const char* desc);
             void setupImGuiStyle();
+
+            // Widgets
+            void dockspaceSetup();
+            void drawMenuBar();
+            void drawEditor();
     };
 
 }
