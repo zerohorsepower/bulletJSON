@@ -2,6 +2,10 @@
 #include "Game.hpp"
 #include "raylib.h"
 
+#ifdef IS_OS_BUILD_WEB
+    #include <emscripten/emscripten.h>
+#endif
+
 int main() {
 
     PatternEditor::Game();

@@ -54,4 +54,4 @@ fi
 mkdir "$FULL_BUILD_DIR";
 
 # Copy static game assets
-mkdir "$FULL_BUILD_DIR/assets";
+cp -r "./assets/" "$FULL_BUILD_DIR/assets";
