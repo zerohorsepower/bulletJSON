@@ -13,7 +13,7 @@ namespace PatternEditor {
 
         // #### General
         inline float deltaTime { GetFrameTime() }, deltaTimeScale { 1.0f };
-        inline bool isPaused { false }, drawFPS { false };
+        inline bool isPaused { false }, drawFPS { true }, isFullscreen { false }, isPerformanceMode { false };
 
         // #### Path
         #ifdef IS_OS_BUILD_WEB

@@ -3,6 +3,7 @@
 #include "Utils.hpp"
 #include "raylib.h"
 #include "raymath.h"
+#include <string>
 
 PatternEditor::GameManager::GameManager() {
 
@@ -32,7 +33,11 @@ void PatternEditor::GameManager::update() {
 
     Global::deltaTime = GetFrameTime() * Global::deltaTimeScale;
 
-    // Ship position movement
+    // -- performance mode
+    if (IsKeyPressed(KEY_SPACE)) Global::isPerformanceMode = !Global::isPerformanceMode; 
+    // -- end performance mode
+
+    // -- ship movement
     float _xInput = (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) - (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT));
     float _yInput = (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) - (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP));
 
@@ -46,6 +51,7 @@ void PatternEditor::GameManager::update() {
         shipPosition.x = Clamp(shipPosition.x, 0 + shipSpriteRectangle.width/2, baseGameWidth - shipSpriteRectangle.width/2);
         shipPosition.y = Clamp(shipPosition.y, 0 + shipSpriteRectangle.height/2, baseGameHeight - shipSpriteRectangle.height/2);
     }
+    // --- end ship movement
 
 
     editor.update();
@@ -77,6 +83,23 @@ void PatternEditor::GameManager::drawGameRenderTexture() {
             0,
             WHITE
         );
+
+        if (Global::drawFPS) {
+
+            std::string _fps = std::string("FPS: ") + std::to_string(GetFPS()) + "\nBullet: 0";
+            DrawRectangle(10, 10, MeasureText("Bullet: 99999", 20) + 20, 60, { 0, 0, 0, 80});
+            DrawText(_fps.c_str(), 20, 20, 20, RED);
+        }
+
+        if (Global::isPerformanceMode) {
+
+            std::string _performanceMode = "Press SPACE to exit from performance mode!";
+            float _pmWidth = MeasureText(_performanceMode.c_str(), 20);
+            Vector2 _pmPosition = { (float) baseGameWidth/2 - _pmWidth/2, baseGameHeight * 0.95f };
+
+            DrawRectangle(_pmPosition.x - 10, _pmPosition.y - 10, _pmWidth + 20, 40, { 0, 0, 0, 80});
+            DrawText(_performanceMode.c_str(), _pmPosition.x, _pmPosition.y, 20, RED);
+        }
     
     EndTextureMode();
 
@@ -97,7 +120,16 @@ void PatternEditor::GameManager::draw() {
 
     BeginDrawing();
         ClearBackground(BLACK);
-        editor.draw(); 
+
+        if (Global::isPerformanceMode) {
+
+            float _renderTextureScale = (float) GetScreenHeight() / gameRenderTextureYInverted.texture.height;
+            float _renderTextureX = (float) GetScreenWidth()/2 - (gameRenderTextureYInverted.texture.width * _renderTextureScale)/2;
+            DrawTextureEx(gameRenderTextureYInverted.texture, { _renderTextureX, 0 }, 0, _renderTextureScale, WHITE);
+        } else {
+
+            editor.draw();
+        }
     
     EndDrawing();
 };

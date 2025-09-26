@@ -1,5 +1,6 @@
 #include "Editor.hpp"
 #include "GameManager.hpp"
+#include "Global.hpp"
 #include "imgui_internal.h"
 #include "raylib.h"
 #include "imgui.h"
@@ -71,6 +72,20 @@ void PatternEditor::Editor::setupImGuiStyle() {
     style.Colors[ImGuiCol_ModalWindowDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
+// Helper to display a little (?) mark which shows a tooltip when hovered.
+// In your own code you may want to display an actual icon if you are using a merged icon fonts (see docs/FONTS.md)
+void PatternEditor::Editor::ImGuiHelpMarker(const char* desc) {
+
+    ImGui::TextDisabled("(?)");
+    if (ImGui::BeginItemTooltip()) {
+
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
+}
+
 void PatternEditor::Editor::update() {};
 
 void PatternEditor::Editor::draw() {
@@ -103,15 +118,21 @@ void PatternEditor::Editor::draw() {
         if (ImGui::BeginMenuBar()) {
 
             if (ImGui::BeginMenu("Options")) {
-                if (ImGui::MenuItem("Toggle Fullscreen")) ToggleFullscreen();
+                if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen)) {
+                    
+                    Global::isFullscreen = !Global::isFullscreen;
+                    ToggleFullscreen();
+                }
                 ImGui::MenuItem("FPS Limit: TODO (60, 120, 144, 240, Unlimited)");
                 ImGui::MenuItem("Texture Filter: TODO (Nearest, Bilinear)");
 
                 ImGui::Separator();
 
-                ImGui::MenuItem("Show FPS: TODO");
-                ImGui::MenuItem("Show Bullet Count: TODO");
+                if (ImGui::MenuItem("Show FPS & Bullet Count", NULL, Global::drawFPS)) Global::drawFPS = !Global::drawFPS;
 
+                if (ImGui::MenuItem("Performance Mode", NULL, Global::isPerformanceMode)) Global::isPerformanceMode = !Global::isPerformanceMode;
+                ImGui::SameLine();
+                ImGuiHelpMarker("The UI causes a lot of FPS loss, to get maximum FPS you can disable the UI by activating this option.");
                 
                 ImGui::EndMenu();
             }
