@@ -8,9 +8,10 @@ The used sprites are from the game DoDonPachi Daiffukatsu developed by CAVE.
 
 # Dependencies
 
-- [Raylib 5.5](https://github.com/raysan5/raylib/): Used for graphics rendering and input handling
-- [ImGui](https://github.com/ocornut/imgui): Used to manage UI
-- [rlImGui](https://github.com/raylib-extras/rlImGui): Used to communicate Raylib with ImGui
+- [Raylib 5.5](https://github.com/raysan5/raylib/): Used for graphics rendering and input handling.
+- [ImGui](https://github.com/ocornut/imgui): Used to manage UI.
+- [rlImGui](https://github.com/raylib-extras/rlImGui): Used to communicate Raylib with ImGui.
+- [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit): Used to draw XML and JSON files.
 
 Build dependencies:
 - [CMake](https://github.com/Kitware/CMake): Build system generator.

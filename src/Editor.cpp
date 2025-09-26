@@ -9,12 +9,14 @@
 
 PatternEditor::Editor::Editor() {
 
+    // ImGui setup
     rlImGuiSetup(true);
     ImGuiIO& _io = ImGui::GetIO();
     _io.FontGlobalScale = 2.0f;
     _io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     setupImGuiStyle();
+
 };
 
 void PatternEditor::Editor::setupImGuiStyle() {
@@ -145,12 +147,16 @@ void PatternEditor::Editor::drawMenuBar() {
 
 void PatternEditor::Editor::drawEditor() {
 
+    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
+
     // TODO
     static int _currentPattern = 0;
     ImGui::NewLine();
     ImGui::Text("PATTERN: ");
     ImGui::SameLine();
     ImGui::Combo("##current_pattern", &_currentPattern, "[DDP DaiOuJou] - Hibachi\0[Ketsui] - Boss 2\0\0");
+    ImGui::SameLine();
+    ImGui::Button(" [+] ");
     ImGui::NewLine();
 
     if (ImGui::BeginTabBar("Editor", ImGuiTabBarFlags_DrawSelectedOverline)) {
@@ -165,11 +171,30 @@ void PatternEditor::Editor::drawEditor() {
 
         if (ImGui::BeginTabItem(" Json ")) {
             
+            static char _jsonExample[1024 * 2] = "{\n  \"@type\": \"horizontal\",\n  \"action\": [\n    {\n      \"@label\": \"oogi\",\n      \"fire\": {\n        \"direction\": {\n          \"@type\": \"absolute\",\n          \"#text\": \"270-(4+$rank*6)*15/2\"\n        },\n        \"bulletRef\": {\n          \"@label\": \"seed\"\n        }\n      },\n      \"repeat\": {\n        \"times\": \"4+$rank*6\",\n        \"action\": {\n          \"fire\": {\n            \"direction\": {\n              \"@type\": \"sequence\",\n              \"#text\": \"15\"\n            },\n            \"bulletRef\": {\n              \"@label\": \"seed\"\n            }\n          }\n        }\n      }\n    },\n    {\n      \"@label\": \"top\",\n      \"repeat\": [\n        {\n          \"times\": \"4\",\n          \"action\": {\n            \"actionRef\": {\n              \"@label\": \"oogi\"\n            },\n            \"wait\": \"40\"\n          }\n        },\n        {\n          \"times\": \"8\",\n          \"action\": {\n            \"actionRef\": {\n              \"@label\": \"oogi\"\n            },\n            \"wait\": \"20\"\n          }\n        }\n      ],\n      \"wait\": [\n        \"40\",\n        \"30\"\n      ]\n    }\n  ],\n  \"bullet\": {\n    \"@label\": \"seed\",\n    \"speed\": \"1.5\",\n    \"action\": {\n      \"changeSpeed\": {\n        \"speed\": \"0\",\n        \"term\": \"60\"\n      },\n      \"wait\": \"60\",\n      \"fire\": {\n        \"speed\": \"0.75\",\n        \"bullet\": null\n      },\n      \"repeat\": {\n        \"times\": \"4+$rank*4\",\n        \"action\": {\n          \"fire\": {\n            \"speed\": {\n              \"@type\": \"sequence\",\n              \"#text\": \"0.3\"\n            },\n            \"bullet\": null\n          }\n        }\n      },\n      \"vanish\": null\n    }\n  }\n}";
+            if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(_jsonExample);
+            ImGui::InputTextMultiline(
+                "##json",
+                _jsonExample,
+                IM_ARRAYSIZE(_jsonExample),
+                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 40),
+                ImGuiInputTextFlags_ReadOnly
+            );
 
             ImGui::EndTabItem();
         }
 
         if (ImGui::BeginTabItem(" BulletML (XML) ")) {
+
+            static char _xmlExample[1024 * 2] = "<?xml version=\"1.0\" ?>\n<!DOCTYPE bulletml SYSTEM \"bulletml.dtd\">\n\n<bulletml type=\"horizontal\"\n          xmlns=\"http://www.asahi-net.or.jp/~cs8k-cyu/bulletml\">\n\n<action label=\"oogi\">\n<fire>\n <direction type=\"absolute\">270-(4+$rank*6)*15/2</direction>\n <bulletRef label=\"seed\"/>\n</fire>\n<repeat><times>4+$rank*6</times>\n<action>\n <fire>\n  <direction type=\"sequence\">15</direction>\n  <bulletRef label=\"seed\"/>\n </fire>\n</action>\n</repeat>\n</action>\n\n<action label=\"top\">\n <repeat> <times>4</times>\n <action>\n  <actionRef label=\"oogi\"/>\n  <wait>40</wait>\n </action>\n </repeat>\n <wait>40</wait>\n <repeat> <times>8</times>\n <action>\n  <actionRef label=\"oogi\"/>\n  <wait>20</wait>\n </action>\n </repeat> \n<wait>30</wait>\n</action>\n\n<bullet label=\"seed\">\n<speed>1.5</speed>\n<action>\n<changeSpeed>\n <speed>0</speed>\n <term>60</term>\n</changeSpeed>\n<wait>60</wait>\n<fire>\n <speed>0.75</speed>\n <bullet/>\n</fire>\n<repeat><times>4+$rank*4</times>\n<action>\n <fire>\n  <speed type=\"sequence\">0.3</speed>\n  <bullet/>\n </fire>\n</action>\n</repeat>\n<vanish/>\n</action>\n</bullet>\n\n</bulletml>";
+            if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(_xmlExample);
+            ImGui::InputTextMultiline(
+                "##bulletml",
+                _xmlExample,
+                IM_ARRAYSIZE(_xmlExample),
+                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 40),
+                ImGuiInputTextFlags_ReadOnly
+            );
 
             ImGui::EndTabItem();
         }
@@ -183,9 +208,6 @@ void PatternEditor::Editor::update() {};
 void PatternEditor::Editor::draw() {
 
     rlImGuiBegin();
-
-    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
-
     dockspaceSetup();
 
     //ImGui::ShowDemoWindow();
