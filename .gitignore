@@ -12,7 +12,7 @@ CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
 /build/
-/game-builds/
+/final-builds/
 /cmake-build-*/
 /.cache/
 

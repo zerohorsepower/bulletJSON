@@ -9,13 +9,19 @@ PatternEditor::GameManager::GameManager() {
 
 void PatternEditor::GameManager::update() {
 
+    Global::deltaTime = GetFrameTime() * Global::deltaTimeScale;
+
     editor.update();
     draw();
 };
 
 void PatternEditor::GameManager::draw() {
 
-    editor.draw();   
+    BeginDrawing();
+        ClearBackground(BLACK);
+        editor.draw(); 
+    
+    EndDrawing();
 };
 
 void PatternEditor::GameManager::clean() {

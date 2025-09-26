@@ -22,22 +22,24 @@ void PatternEditor::Game() {
 
 // Init basic game structure
 void PatternEditor::InitGame() {
-    
+
     // ##### Setup
     InitWindow(
-        1280,
-        720,
+        2400, //1280,
+        1400, //720,
         GAME_NAME
     );
 
     SetExitKey(KEY_NULL);
+
     SetWindowState(FLAG_WINDOW_RESIZABLE);
+    //SetWindowSize(GetMonitorWidth(GetCurrentMonitor()) * 0.9f, GetMonitorHeight(GetCurrentMonitor()) * 0.9f);
+    MaximizeWindow();
 
     // #### Audio
     InitAudioDevice();
 
     // ##### Load assets
-
 };
 
 // Run the game loop

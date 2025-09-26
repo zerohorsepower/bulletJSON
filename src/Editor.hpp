@@ -9,6 +9,7 @@ namespace PatternEditor {
             void update();
             void draw();
             void clean();
+            void setupImGuiStyle();
     };
 
 }
