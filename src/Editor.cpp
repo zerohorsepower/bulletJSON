@@ -1,4 +1,5 @@
 #include "Editor.hpp"
+#include "GameManager.hpp"
 #include "imgui_internal.h"
 #include "raylib.h"
 #include "imgui.h"
@@ -129,7 +130,7 @@ void PatternEditor::Editor::draw() {
 
     ImGui::Begin("Game");
         
-        ImGui::Text("Game render texture will be here...");
+        if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
     
     ImGui::End();
 
