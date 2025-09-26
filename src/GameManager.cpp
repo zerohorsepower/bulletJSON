@@ -1,6 +1,8 @@
 #include "GameManager.hpp"
 #include "Global.hpp"
+#include "Utils.hpp"
 #include "raylib.h"
+#include "raymath.h"
 
 PatternEditor::GameManager::GameManager() {
 
@@ -16,11 +18,35 @@ PatternEditor::GameManager::GameManager() {
         gameRenderTexture.texture.width,
         gameRenderTexture.texture.height
     );
+
+    // Load game texture atlas
+    gameTextureAtlas = LoadTexture((Global::assetsPath + "texture.png").c_str());
+    
+    // Set texture filter
+    SetTextureFilter(gameTextureAtlas, TEXTURE_FILTER_BILINEAR);
+    SetTextureFilter(gameRenderTexture.texture, TEXTURE_FILTER_BILINEAR);
+    SetTextureFilter(gameRenderTextureYInverted.texture, TEXTURE_FILTER_BILINEAR);
 };
 
 void PatternEditor::GameManager::update() {
 
     Global::deltaTime = GetFrameTime() * Global::deltaTimeScale;
+
+    // Ship position movement
+    float _xInput = (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) - (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT));
+    float _yInput = (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) - (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP));
+
+    if (_xInput != 0 || _yInput != 0) {
+
+        float _moveDirection = PointDirection(Vector2 {0, 0}, Vector2 {_xInput, _yInput});
+
+        shipPosition.x += LengthDirX(shipSpeed * Global::deltaTime, _moveDirection);
+        shipPosition.y += LengthDirY(shipSpeed * Global::deltaTime, _moveDirection);
+
+        shipPosition.x = Clamp(shipPosition.x, 0 + shipSpriteRectangle.width/2, baseGameWidth - shipSpriteRectangle.width/2);
+        shipPosition.y = Clamp(shipPosition.y, 0 + shipSpriteRectangle.height/2, baseGameHeight - shipSpriteRectangle.height/2);
+    }
+
 
     editor.update();
     draw();
@@ -32,7 +58,25 @@ void PatternEditor::GameManager::drawGameRenderTexture() {
         
         ClearBackground(BLACK);
 
-        DrawText("TEST TEXT", 300, 300, 30, RED);
+        // Draw game background
+        DrawTexturePro(
+            gameTextureAtlas,
+            { 3, 3, 800, 800 },
+            { 0, 0, 800, 800 },
+            { 0, 0 },
+            0,
+            WHITE
+        );
+
+        // Draw ship
+        DrawTexturePro(
+            gameTextureAtlas,
+            shipSpriteRectangle,
+            { shipPosition.x, shipPosition.y, shipSpriteRectangle.width, shipSpriteRectangle.height },
+            { shipSpriteRectangle.width/2, shipSpriteRectangle.height/2 },
+            0,
+            WHITE
+        );
     
     EndTextureMode();
 
@@ -64,6 +108,8 @@ void PatternEditor::GameManager::clean() {
 
     UnloadRenderTexture(gameRenderTextureYInverted);
     UnloadRenderTexture(gameRenderTexture);
+
+    UnloadTexture(gameTextureAtlas);
 
     PatternEditor::gameManagerPtr = nullptr;
 };

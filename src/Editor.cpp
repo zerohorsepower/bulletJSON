@@ -89,7 +89,7 @@ void PatternEditor::Editor::draw() {
         ImGui::DockBuilderAddNode(_dockspaceId);
         ImGui::DockBuilderSetNodeSize(_dockspaceId, ImGui::GetMainViewport()->Size);
 
-    	ImGui::DockBuilderSplitNode(_dockspaceId, ImGuiDir_Left, 0.3f, &_dockIdLeft, &_dockIdRight);
+    	ImGui::DockBuilderSplitNode(_dockspaceId, ImGuiDir_Left, 0.4f, &_dockIdLeft, &_dockIdRight);
         ImGui::DockBuilderDockWindow("Pattern Editor", _dockIdLeft);
         ImGui::DockBuilderDockWindow("Game", _dockIdRight);
 
@@ -103,8 +103,9 @@ void PatternEditor::Editor::draw() {
         if (ImGui::BeginMenuBar()) {
 
             if (ImGui::BeginMenu("Options")) {
-                ImGui::MenuItem("Fullscreen: TODO (toggle window fullscreen)");
+                if (ImGui::MenuItem("Toggle Fullscreen")) ToggleFullscreen();
                 ImGui::MenuItem("FPS Limit: TODO (60, 120, 144, 240, Unlimited)");
+                ImGui::MenuItem("Texture Filter: TODO (Nearest, Bilinear)");
 
                 ImGui::Separator();
 

@@ -1,8 +1,10 @@
 # Bullet Hell Pattern Editor
 
-This project is a Bullet Hell / Danmaku Pattern Editor, you can create and edit pattern for any kind of bullet hell game. It also supports BulletML.
+This project is a Bullet Hell / Danmaku Pattern Editor, you can create and edit pattern for any kind of bullet hell game. It also supports [BulletML](https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html) XML Files.
 
-The used sprites are from the game DoDonPachi Daiffukatsu, created by CAVE.
+Most pattern examples are from [BulletMLExamples](https://github.com/dmanning23/BulletMLExamples).
+
+The used sprites are from the game DoDonPachi Daiffukatsu developed by CAVE.
 
 # Dependencies
 

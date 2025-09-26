@@ -16,6 +16,12 @@ namespace PatternEditor {
             RenderTexture gameRenderTexture;
             RenderTexture gameRenderTextureYInverted;
 
+            Texture gameTextureAtlas;
+
+            Vector2 shipPosition { 400, 700 };
+            float shipSpeed { 400.0f };
+            Rectangle shipSpriteRectangle { 809, 163, 58, 66 };
+
             void drawGameRenderTexture();
 
         public:
