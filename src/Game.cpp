@@ -1,5 +1,4 @@
 #include "GameManager.hpp"
-#include "Global.hpp"
 #include "Game.hpp"
 #include "raylib.h"
 
@@ -17,8 +16,8 @@ void PatternEditor::Game() {
 
     PatternEditor::GameManager gameManager;
 
-    PatternEditor::GameLoop(&gameManager);
-    PatternEditor::EndGame(&gameManager);
+    PatternEditor::GameLoop();
+    PatternEditor::EndGame();
 }
 
 // Init basic game structure
@@ -32,6 +31,7 @@ void PatternEditor::InitGame() {
     );
 
     SetExitKey(KEY_NULL);
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     // #### Audio
     InitAudioDevice();
@@ -41,7 +41,7 @@ void PatternEditor::InitGame() {
 };
 
 // Run the game loop
-void PatternEditor::GameLoop(GameManager * gameManager) {
+void PatternEditor::GameLoop() {
 
     #ifdef IS_OS_BUILD_WEB
     
@@ -51,22 +51,22 @@ void PatternEditor::GameLoop(GameManager * gameManager) {
 
         while (!WindowShouldClose()) {
 
-            GameLoopImplementation(gameManager);
+            GameLoopImplementation();
         }
 
     #endif
 };
 
-void PatternEditor::GameLoopImplementation(GameManager * gameManager) {
+void PatternEditor::GameLoopImplementation() {
 
-    gameManager->update();
+    if (PatternEditor::gameManagerPtr != nullptr) PatternEditor::gameManagerPtr->update();
 }
 
 // Clean and close the game
-void PatternEditor::EndGame(GameManager * gameManager) {
+void PatternEditor::EndGame() {
 
 
-    gameManager->clean();
+    if (PatternEditor::gameManagerPtr != nullptr) PatternEditor::gameManagerPtr->clean();
 
     // Clean assets
 
@@ -74,9 +74,3 @@ void PatternEditor::EndGame(GameManager * gameManager) {
     CloseAudioDevice();
     CloseWindow();
 };
-
-// Check if Global::isPaused or Global::isSoftPaused are true
-bool PatternEditor::IsGamePaused() {
-
-    return Global::isPaused;
-}

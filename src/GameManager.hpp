@@ -1,8 +1,12 @@
 #pragma once
 
+#include "Editor.hpp"
 namespace PatternEditor {
 
     class GameManager {
+
+        private:
+            Editor editor;
 
         public:
             GameManager();
@@ -11,4 +15,5 @@ namespace PatternEditor {
             void clean();
     };
 
+    inline GameManager * gameManagerPtr { nullptr };
 }

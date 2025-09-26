@@ -1,0 +1,6 @@
+- [ ] Create Github pages branch
+    - [ ] Create script that auto update gh pages branch
+- [ ] Editor
+- [ ] Save/Load patterns from json files
+- [ ] Convert BulletML patterns
+- [ ] Export Pattern as BulletML xml pattern
