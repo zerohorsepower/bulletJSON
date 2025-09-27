@@ -1,9 +1,13 @@
 #pragma once
 
+#include "imgui.h"
+
 namespace PatternEditor {
 
     class Editor {
         private:
+            ImFont * editorFont;
+
             // ImGui
             void ImGuiHelpMarker(const char* desc);
             void setupImGuiStyle();
@@ -12,6 +16,7 @@ namespace PatternEditor {
             void dockspaceSetup();
             void drawMenuBar();
             void drawEditor();
+            void drawMainEditorSettings();
 
         public:
             Editor();

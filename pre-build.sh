@@ -56,3 +56,4 @@ mkdir "$FULL_BUILD_DIR";
 # Copy static game assets
 mkdir "$FULL_BUILD_DIR/assets";
 cp "./assets/texture.png" "$FULL_BUILD_DIR/assets/";
+cp "./assets/fira-code.ttf" "$FULL_BUILD_DIR/assets/";

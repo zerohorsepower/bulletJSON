@@ -12,7 +12,9 @@ PatternEditor::Editor::Editor() {
     // ImGui setup
     rlImGuiSetup(true);
     ImGuiIO& _io = ImGui::GetIO();
-    _io.FontGlobalScale = 2.0f;
+
+    editorFont = _io.Fonts->AddFontFromFileTTF((Global::assetsPath + "/fira-code.ttf").c_str(), 30.0f, NULL, _io.Fonts->GetGlyphRangesDefault());
+
     _io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     setupImGuiStyle();
@@ -74,8 +76,9 @@ void PatternEditor::Editor::setupImGuiStyle() {
     style.Colors[ImGuiCol_ModalWindowDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
+void PatternEditor::Editor::update() {};
+
 // Helper to display a little (?) mark which shows a tooltip when hovered.
-// In your own code you may want to display an actual icon if you are using a merged icon fonts (see docs/FONTS.md)
 void PatternEditor::Editor::ImGuiHelpMarker(const char* desc) {
 
     ImGui::TextDisabled("(?)");
@@ -251,35 +254,99 @@ void PatternEditor::Editor::drawMenuBar() {
             ImGui::EndPopup();
         }
 
+        static bool _openHTUModal = false;
         if (ImGui::BeginMenu("Help")) {
 
-            if (ImGui::MenuItem("##github_link")) {
-                OpenURL("https://github.com/zerohorsepower/bullet-hell-pattern-editor");
-            };
-            ImGui::SameLine();
-            ImGui::TextLinkOpenURL("https://github.com/zerohorsepower/bullet-hell-pattern-editor", "https://github.com/zerohorsepower/bullet-hell-pattern-editor");
-            
+            if (ImGui::MenuItem("How to Use")) _openHTUModal = true;            
             
             ImGui::EndMenu();
+        }
+
+        if (_openHTUModal) ImGui::OpenPopup("How To Use");
+
+        if (ImGui::BeginPopupModal("How To Use", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+            ImGui::Text("TODO: finish this guide");
+
+            ImGui::Text("This project uses a very similar approach from");
+            ImGui::SameLine();
+            if (ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html")) {
+            
+                #ifdef IS_OS_BUILD_WEB
+                    OpenURL("https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html");
+                #endif
+            }
+            ImGui::Text(", have a good understanding on how it works will help you to understand how to create patterns here.");
+
+            ImGui::NewLine();
+
+            ImGui::Text("For a more detailed documentation, access the");
+            ImGui::SameLine();
+            if(ImGui::TextLinkOpenURL("source code", "https://github.com/zerohorsepower/bullet-hell-pattern-editor")) {
+            
+                #ifdef IS_OS_BUILD_WEB
+                    OpenURL("https://github.com/zerohorsepower/bullet-hell-pattern-editor");
+                #endif  
+            }
+
+            
+            ImGui::Separator();
+            if (ImGui::Button("Close", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); _openHTUModal = false; }
+            
+            ImGui::SetItemDefaultFocus();
+            ImGui::EndPopup();
         }
 
         ImGui::EndMenuBar();
     }
 }
 
-void PatternEditor::Editor::drawEditor() {
+void PatternEditor::Editor::drawMainEditorSettings() {
 
-    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
-
-    // TODO
+    float _defaultItemWidth = ImGui::CalcItemWidth();
     static int _currentPattern = 0;
+    
     ImGui::NewLine();
     ImGui::Text("PATTERN: ");
     ImGui::SameLine();
     ImGui::Combo("##current_pattern", &_currentPattern, "[DDP DaiOuJou] - Hibachi\0[Ketsui] - Boss 2\0\0");
     ImGui::SameLine();
     ImGui::Button(" [+] ");
+
+    ImGui::Text("GAME SPEED: ");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(_defaultItemWidth + 44);
+    ImGui::SliderFloat("##game_speed", &Global::deltaTimeScale, 0.5f, 2.0f);
+    
+
+    ImGui::Text("RANK: ");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(_defaultItemWidth + 126);
+    ImGui::SliderInt("##rank", &Global::rank, 1, 5);
+
+    ImGui::Text("SLOWDOWN: ");
+    ImGui::SameLine();
+    ImGuiHelpMarker("Case enabled, the game will run at the target speed when the number of bullets on screen is reached. (BULLETS x SLOWDOWN TARGET SPEED)");
+    ImGui::SameLine();
+    ImGui::Checkbox("##slowdown_check", &Global::enableSlowdown);
+    ImGuiSliderFlags _sliderFlags = ImGuiSliderFlags_None;
+    if (!Global::enableSlowdown) _sliderFlags = ImGuiSliderFlags_ReadOnly;
+    //int _sliderFlags = ImGui::FLAGS // disabled
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(_defaultItemWidth/2 - 15);
+    ImGui::DragInt("##bullets_to_slowdown", &Global::bulletsToSlowdown, 1, 0, 99999, NULL, _sliderFlags);
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(_defaultItemWidth/2 - 15);
+    ImGui::SliderFloat("##target_slowdown", &Global::targetSlowdown, 0.5f, 1.0f, NULL, _sliderFlags);
+
     ImGui::NewLine();
+
+}
+
+void PatternEditor::Editor::drawEditor() {
+
+    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
+    drawMainEditorSettings();
 
     if (ImGui::BeginTabBar("Editor", ImGuiTabBarFlags_DrawSelectedOverline)) {
 
@@ -325,16 +392,16 @@ void PatternEditor::Editor::drawEditor() {
     }
 }
 
-void PatternEditor::Editor::update() {};
-
 void PatternEditor::Editor::draw() {
 
     rlImGuiBegin();
+    ImGui::PushFont(editorFont);
     dockspaceSetup();
 
     //ImGui::ShowDemoWindow();
 
     ImGui::Begin("Pattern Editor", NULL, ImGuiWindowFlags_MenuBar);
+    
 
         drawMenuBar();
         drawEditor();
@@ -345,7 +412,9 @@ void PatternEditor::Editor::draw() {
         
         if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
     
+    
     ImGui::End();
+    ImGui::PopFont();
     rlImGuiEnd();
 };
 
