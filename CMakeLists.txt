@@ -133,6 +133,6 @@ endif()
 add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
-    COMMAND ${CMAKE_SOURCE_DIR}/post-build.sh ${PROJECT_NAME} ${OS_BUILD_TYPE}
+    COMMAND ${CMAKE_SOURCE_DIR}/post-build.sh ${PROJECT_NAME} ${OS_BUILD_TYPE} ${CMAKE_BUILD_TYPE}
     COMMENT "Running post build script..."
 )

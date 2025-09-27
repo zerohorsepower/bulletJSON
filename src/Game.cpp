@@ -1,5 +1,6 @@
 #include "GameManager.hpp"
 #include "Game.hpp"
+#include "Global.hpp"
 #include "raylib.h"
 
 #ifdef IS_OS_BUILD_WEB
@@ -43,7 +44,10 @@ void PatternEditor::InitGame() {
     // #### Audio
     InitAudioDevice();
 
-    // ##### Load assets
+    #ifdef IS_OS_BUILD_WEB
+        Global::fpsLimit = 144;
+        SetTargetFPS(144);
+    #endif
 };
 
 // Run the game loop

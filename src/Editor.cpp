@@ -198,7 +198,12 @@ void PatternEditor::Editor::drawMenuBar() {
 
             ImGui::Text("It also supports");
             ImGui::SameLine();
-            ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html");
+            if (ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html")) {
+            
+                #ifdef IS_OS_BUILD_WEB
+                    OpenURL("https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html");
+                #endif
+            }
             ImGui::SameLine();
             ImGui::Text("XML Files.");
 
@@ -206,7 +211,12 @@ void PatternEditor::Editor::drawMenuBar() {
 
             ImGui::Text("Most pattern examples are from");
             ImGui::SameLine();
-            ImGui::TextLinkOpenURL("BulletMLExamples", "https://github.com/dmanning23/BulletMLExamples");
+            if(ImGui::TextLinkOpenURL("BulletMLExamples", "https://github.com/dmanning23/BulletMLExamples")) {
+            
+                #ifdef IS_OS_BUILD_WEB
+                    OpenURL("https://github.com/dmanning23/BulletMLExamples");
+                #endif
+            }
 
             ImGui::NewLine();
 
@@ -217,11 +227,21 @@ void PatternEditor::Editor::drawMenuBar() {
 
             ImGui::Text("This project was developed by");
             ImGui::SameLine();
-            ImGui::TextLinkOpenURL("zerohorsepower", "https://github.com/zerohorsepower");
+            if(ImGui::TextLinkOpenURL("zerohorsepower", "https://github.com/zerohorsepower")) {
+            
+                #ifdef IS_OS_BUILD_WEB
+                    OpenURL("https://github.com/zerohorsepower");
+                #endif 
+            }
 
             ImGui::Text("For more information about the project, access the");
             ImGui::SameLine();
-            ImGui::TextLinkOpenURL("source code", "https://github.com/zerohorsepower/bullet-hell-pattern-editor");
+            if(ImGui::TextLinkOpenURL("source code", "https://github.com/zerohorsepower/bullet-hell-pattern-editor")) {
+            
+                #ifdef IS_OS_BUILD_WEB
+                    OpenURL("https://github.com/zerohorsepower/bullet-hell-pattern-editor");
+                #endif  
+            }
 
             
             ImGui::Separator();
