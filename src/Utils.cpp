@@ -67,3 +67,6 @@ float PatternEditor::AngleDifference(float angle1, float angle2) {
 float PatternEditor::Sign(float number) {
     return (number > 0) - (number < 0);
 }
+
+// ################ General
+

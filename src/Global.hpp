@@ -14,6 +14,7 @@ namespace PatternEditor {
         // #### General
         inline float deltaTime { GetFrameTime() }, deltaTimeScale { 1.0f };
         inline bool isPaused { false }, drawFPS { true }, isFullscreen { false }, isPerformanceMode { false };
+        inline int textureFilter { TEXTURE_FILTER_POINT }, fpsLimit { 99999 };
 
         // #### Path
         #ifdef IS_OS_BUILD_WEB

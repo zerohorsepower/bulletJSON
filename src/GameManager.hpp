@@ -18,7 +18,7 @@ namespace PatternEditor {
 
             Texture gameTextureAtlas;
 
-            Vector2 shipPosition { 400, 700 };
+            Vector2 shipPosition { 400, 600 };
             float shipSpeed { 400.0f };
             Rectangle shipSpriteRectangle { 809, 163, 58, 66 };
 
@@ -30,7 +30,7 @@ namespace PatternEditor {
             void draw();
             void clean();
 
-            
+            void setTextureFilterAll(int textureFilter);
     };
 
     inline GameManager * gameManagerPtr { nullptr };

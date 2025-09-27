@@ -24,9 +24,7 @@ PatternEditor::GameManager::GameManager() {
     gameTextureAtlas = LoadTexture((Global::assetsPath + "texture.png").c_str());
     
     // Set texture filter
-    SetTextureFilter(gameTextureAtlas, TEXTURE_FILTER_BILINEAR);
-    SetTextureFilter(gameRenderTexture.texture, TEXTURE_FILTER_BILINEAR);
-    SetTextureFilter(gameRenderTextureYInverted.texture, TEXTURE_FILTER_BILINEAR);
+    setTextureFilterAll(Global::textureFilter);
 };
 
 void PatternEditor::GameManager::update() {
@@ -72,6 +70,16 @@ void PatternEditor::GameManager::drawGameRenderTexture() {
             { 0, 0 },
             0,
             WHITE
+        );
+
+        // Draw ship shadow
+        DrawTexturePro(
+            gameTextureAtlas,
+            shipSpriteRectangle,
+            { shipPosition.x + 40, shipPosition.y + 150, shipSpriteRectangle.width*0.8f, shipSpriteRectangle.height*0.8f },
+            { shipSpriteRectangle.width/2, shipSpriteRectangle.height/2 },
+            0,
+            { 0, 0, 0, 120 }
         );
 
         // Draw ship
@@ -145,3 +153,12 @@ void PatternEditor::GameManager::clean() {
 
     PatternEditor::gameManagerPtr = nullptr;
 };
+
+void PatternEditor::GameManager::setTextureFilterAll(int textureFilter) {
+
+    Global::textureFilter = textureFilter;
+
+    SetTextureFilter(gameTextureAtlas, textureFilter);
+    SetTextureFilter(gameRenderTexture.texture, textureFilter);
+    SetTextureFilter(gameRenderTextureYInverted.texture, textureFilter);
+}

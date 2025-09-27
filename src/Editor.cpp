@@ -112,14 +112,66 @@ void PatternEditor::Editor::drawMenuBar() {
 
     if (ImGui::BeginMenuBar()) {
 
+        static bool _openAbout = false;
         if (ImGui::BeginMenu("Options")) {
+
             if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen)) {
                 
                 Global::isFullscreen = !Global::isFullscreen;
                 ToggleFullscreen();
             }
-            ImGui::MenuItem("FPS Limit: TODO (60, 120, 144, 240, Unlimited)");
-            ImGui::MenuItem("Texture Filter: TODO (Nearest, Bilinear)");
+
+            if (ImGui::BeginMenu("Texture Filter")) {
+
+                if (ImGui::MenuItem("Nearest", NULL, (Global::textureFilter == TEXTURE_FILTER_POINT))) {
+
+                    PatternEditor::gameManagerPtr->setTextureFilterAll(TEXTURE_FILTER_POINT);
+                }
+
+                if (ImGui::MenuItem("Bilinear", NULL, (Global::textureFilter == TEXTURE_FILTER_BILINEAR))) {
+
+                    PatternEditor::gameManagerPtr->setTextureFilterAll(TEXTURE_FILTER_BILINEAR);
+                }
+
+                ImGui::EndMenu();
+            }
+
+
+            if (ImGui::BeginMenu("FPS Limit")) {
+
+                if (ImGui::MenuItem("No FPS Limit", NULL, (Global::fpsLimit == 99999))) {
+
+                    Global::fpsLimit = 99999;
+                    SetTargetFPS(99999);
+                }
+
+                if (ImGui::MenuItem("60", NULL, (Global::fpsLimit == 60))) {
+
+                    Global::fpsLimit = 60;
+                    SetTargetFPS(60);
+                }
+
+                if (ImGui::MenuItem("120", NULL, (Global::fpsLimit == 120))) {
+
+                    Global::fpsLimit = 120;
+                    SetTargetFPS(120);
+                }
+
+                if (ImGui::MenuItem("144", NULL, (Global::fpsLimit == 144))) {
+
+                    Global::fpsLimit = 144;
+                    SetTargetFPS(144);
+                }
+
+                if (ImGui::MenuItem("240", NULL, (Global::fpsLimit == 240))) {
+
+                    Global::fpsLimit = 240;
+                    SetTargetFPS(240);
+                }
+
+                ImGui::EndMenu();
+            }
+            
 
             ImGui::Separator();
 
@@ -131,13 +183,63 @@ void PatternEditor::Editor::drawMenuBar() {
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("About")) {};
+            if (ImGui::MenuItem("About")) _openAbout = true;
             
             ImGui::EndMenu();
         }
 
+        if (_openAbout) ImGui::OpenPopup("About");
+
+        if (ImGui::BeginPopupModal("About", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+            ImGui::Text("This project is a Bullet Hell / Danmaku Pattern Editor,\nyou can create and edit patterns for any kind of bullet hell game here.");
+            
+            ImGui::NewLine();
+
+            ImGui::Text("It also supports");
+            ImGui::SameLine();
+            ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html");
+            ImGui::SameLine();
+            ImGui::Text("XML Files.");
+
+            ImGui::NewLine();
+
+            ImGui::Text("Most pattern examples are from");
+            ImGui::SameLine();
+            ImGui::TextLinkOpenURL("BulletMLExamples", "https://github.com/dmanning23/BulletMLExamples");
+
+            ImGui::NewLine();
+
+            ImGui::TextColored({ 150, 0, 0, 255 }, "The used sprites are from the game DoDonPachi Daiffukatsu, developed by CAVE.");
+            ImGui::TextColored({ 150, 0, 0, 255 }, "All rights reserved ©.");
+
+            ImGui::NewLine();
+
+            ImGui::Text("This project was developed by");
+            ImGui::SameLine();
+            ImGui::TextLinkOpenURL("zerohorsepower", "https://github.com/zerohorsepower");
+
+            ImGui::Text("For more information about the project, access the");
+            ImGui::SameLine();
+            ImGui::TextLinkOpenURL("source code", "https://github.com/zerohorsepower/bullet-hell-pattern-editor");
+
+            
+            ImGui::Separator();
+            if (ImGui::Button("Close", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); _openAbout = false; }
+            
+            ImGui::SetItemDefaultFocus();
+            ImGui::EndPopup();
+        }
+
         if (ImGui::BeginMenu("Help")) {
 
+            if (ImGui::MenuItem("##github_link")) {
+                OpenURL("https://github.com/zerohorsepower/bullet-hell-pattern-editor");
+            };
+            ImGui::SameLine();
+            ImGui::TextLinkOpenURL("https://github.com/zerohorsepower/bullet-hell-pattern-editor", "https://github.com/zerohorsepower/bullet-hell-pattern-editor");
+            
+            
             ImGui::EndMenu();
         }
 
