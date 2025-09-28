@@ -1,6 +1,5 @@
 #include "GameManager.hpp"
 #include "Game.hpp"
-#include "Global.hpp"
 #include "raylib.h"
 
 #ifdef IS_OS_BUILD_WEB
@@ -28,17 +27,23 @@ void PatternEditor::Game() {
 // Init basic game structure
 void PatternEditor::InitGame() {
 
+    // ##### Get Screen Resolution
+    InitWindow(400,400, GAME_NAME);
+    int screenHeight = GetMonitorHeight(GetCurrentMonitor()) * 0.9f;
+    int screenWidth = GetMonitorWidth(GetCurrentMonitor()) * 0.9f;
+    CloseWindow();
+
     // ##### Setup
     InitWindow(
-        2400, //1280,
-        1400, //720,
+        screenWidth,
+        screenHeight,
         GAME_NAME
     );
 
     SetExitKey(KEY_NULL);
 
     SetWindowState(FLAG_WINDOW_RESIZABLE);
-    //SetWindowSize(GetMonitorWidth(GetCurrentMonitor()) * 0.9f, GetMonitorHeight(GetCurrentMonitor()) * 0.9f);
+    SetWindowMinSize(400, 400);
     MaximizeWindow();
 
     // #### Audio

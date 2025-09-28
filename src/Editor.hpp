@@ -7,6 +7,7 @@ namespace PatternEditor {
     class Editor {
         private:
             ImFont * editorFont;
+            float fontSize = 30.0f;
 
             // ImGui
             void ImGuiHelpMarker(const char* desc);

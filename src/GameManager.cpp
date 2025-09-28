@@ -92,6 +92,7 @@ void PatternEditor::GameManager::drawGameRenderTexture() {
             WHITE
         );
 
+        // In-game UI
         if (Global::drawFPS) {
 
             std::string _fps = std::string("FPS: ") + std::to_string(GetFPS()) + "\nBullet: 0";

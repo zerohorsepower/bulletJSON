@@ -13,7 +13,7 @@ PatternEditor::Editor::Editor() {
     rlImGuiSetup(true);
     ImGuiIO& _io = ImGui::GetIO();
 
-    editorFont = _io.Fonts->AddFontFromFileTTF((Global::assetsPath + "/fira-code.ttf").c_str(), 30.0f, NULL, _io.Fonts->GetGlyphRangesDefault());
+    editorFont = _io.Fonts->AddFontFromFileTTF((Global::assetsPath + "/fira-code.ttf").c_str(), fontSize, NULL, _io.Fonts->GetGlyphRangesDefault());
 
     _io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
@@ -121,7 +121,7 @@ void PatternEditor::Editor::drawMenuBar() {
             if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen)) {
                 
                 Global::isFullscreen = !Global::isFullscreen;
-                ToggleFullscreen();
+                ToggleBorderlessWindowed();
             }
 
             if (ImGui::BeginMenu("Texture Filter")) {
@@ -384,40 +384,11 @@ void PatternEditor::Editor::drawEditor() {
                 "##json",
                 _jsonExample,
                 IM_ARRAYSIZE(_jsonExample),
-                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 30),
+                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * ImGui::GetWindowHeight() * 0.018f),
                 ImGuiInputTextFlags_AllowTabInput
             );
 
             if (_jsonEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
-
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem(" BulletML (XML) ")) {
-
-            static char _xmlExample[1024 * 2] = "<?xml version=\"1.0\" ?>\n<!DOCTYPE bulletml SYSTEM \"bulletml.dtd\">\n\n<bulletml type=\"horizontal\"\n          xmlns=\"http://www.asahi-net.or.jp/~cs8k-cyu/bulletml\">\n\n<action label=\"oogi\">\n<fire>\n <direction type=\"absolute\">270-(4+$rank*6)*15/2</direction>\n <bulletRef label=\"seed\"/>\n</fire>\n<repeat><times>4+$rank*6</times>\n<action>\n <fire>\n  <direction type=\"sequence\">15</direction>\n  <bulletRef label=\"seed\"/>\n </fire>\n</action>\n</repeat>\n</action>\n\n<action label=\"top\">\n <repeat> <times>4</times>\n <action>\n  <actionRef label=\"oogi\"/>\n  <wait>40</wait>\n </action>\n </repeat>\n <wait>40</wait>\n <repeat> <times>8</times>\n <action>\n  <actionRef label=\"oogi\"/>\n  <wait>20</wait>\n </action>\n </repeat> \n<wait>30</wait>\n</action>\n\n<bullet label=\"seed\">\n<speed>1.5</speed>\n<action>\n<changeSpeed>\n <speed>0</speed>\n <term>60</term>\n</changeSpeed>\n<wait>60</wait>\n<fire>\n <speed>0.75</speed>\n <bullet/>\n</fire>\n<repeat><times>4+$rank*4</times>\n<action>\n <fire>\n  <speed type=\"sequence\">0.3</speed>\n  <bullet/>\n </fire>\n</action>\n</repeat>\n<vanish/>\n</action>\n</bullet>\n\n</bulletml>";
-
-            if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(_xmlExample);
-            
-            static std::string _xmlEditSaveButtonLabel = "Edit";
-
-            if (ImGui::Button(_xmlEditSaveButtonLabel.c_str(), _fullButtonSize)) {
-                
-                if (_xmlEditSaveButtonLabel == "Edit") _xmlEditSaveButtonLabel = "Save";
-                else _xmlEditSaveButtonLabel = "Edit";
-            }
-
-            if (_xmlEditSaveButtonLabel == "Edit") ImGui::BeginDisabled();
-
-            ImGui::InputTextMultiline(
-                "##bulletml",
-                _xmlExample,
-                IM_ARRAYSIZE(_xmlExample),
-                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 30),
-                ImGuiInputTextFlags_AllowTabInput
-            );
-
-            if (_xmlEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
 
             ImGui::EndTabItem();
         }
@@ -432,7 +403,7 @@ void PatternEditor::Editor::draw() {
     ImGui::PushFont(editorFont);
     dockspaceSetup();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     ImGui::Begin("Pattern Editor", NULL, ImGuiWindowFlags_MenuBar);
     
@@ -444,6 +415,8 @@ void PatternEditor::Editor::draw() {
 
     ImGui::Begin("Game");
         
+        //ImGui::Image((ImTextureID) PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture.id, {200, 200});
+
         if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
     
     
