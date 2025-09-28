@@ -330,14 +330,21 @@ void PatternEditor::Editor::drawMainEditorSettings() {
     ImGui::SameLine();
     ImGui::Checkbox("##slowdown_check", &Global::enableSlowdown);
     ImGuiSliderFlags _sliderFlags = ImGuiSliderFlags_None;
-    if (!Global::enableSlowdown) _sliderFlags = ImGuiSliderFlags_ReadOnly;
-    //int _sliderFlags = ImGui::FLAGS // disabled
+    
+    if (!Global::enableSlowdown) {
+
+        _sliderFlags = ImGuiSliderFlags_ReadOnly;
+        ImGui::BeginDisabled();
+    }
+
     ImGui::SameLine();
     ImGui::SetNextItemWidth(_defaultItemWidth/2 - 15);
     ImGui::DragInt("##bullets_to_slowdown", &Global::bulletsToSlowdown, 1, 0, 99999, NULL, _sliderFlags);
     ImGui::SameLine();
     ImGui::SetNextItemWidth(_defaultItemWidth/2 - 15);
     ImGui::SliderFloat("##target_slowdown", &Global::targetSlowdown, 0.5f, 1.0f, NULL, _sliderFlags);
+
+    if (!Global::enableSlowdown) ImGui::EndDisabled();
 
     ImGui::NewLine();
 
@@ -362,13 +369,26 @@ void PatternEditor::Editor::drawEditor() {
             
             static char _jsonExample[1024 * 2] = "{\n  \"@type\": \"horizontal\",\n  \"action\": [\n    {\n      \"@label\": \"oogi\",\n      \"fire\": {\n        \"direction\": {\n          \"@type\": \"absolute\",\n          \"#text\": \"270-(4+$rank*6)*15/2\"\n        },\n        \"bulletRef\": {\n          \"@label\": \"seed\"\n        }\n      },\n      \"repeat\": {\n        \"times\": \"4+$rank*6\",\n        \"action\": {\n          \"fire\": {\n            \"direction\": {\n              \"@type\": \"sequence\",\n              \"#text\": \"15\"\n            },\n            \"bulletRef\": {\n              \"@label\": \"seed\"\n            }\n          }\n        }\n      }\n    },\n    {\n      \"@label\": \"top\",\n      \"repeat\": [\n        {\n          \"times\": \"4\",\n          \"action\": {\n            \"actionRef\": {\n              \"@label\": \"oogi\"\n            },\n            \"wait\": \"40\"\n          }\n        },\n        {\n          \"times\": \"8\",\n          \"action\": {\n            \"actionRef\": {\n              \"@label\": \"oogi\"\n            },\n            \"wait\": \"20\"\n          }\n        }\n      ],\n      \"wait\": [\n        \"40\",\n        \"30\"\n      ]\n    }\n  ],\n  \"bullet\": {\n    \"@label\": \"seed\",\n    \"speed\": \"1.5\",\n    \"action\": {\n      \"changeSpeed\": {\n        \"speed\": \"0\",\n        \"term\": \"60\"\n      },\n      \"wait\": \"60\",\n      \"fire\": {\n        \"speed\": \"0.75\",\n        \"bullet\": null\n      },\n      \"repeat\": {\n        \"times\": \"4+$rank*4\",\n        \"action\": {\n          \"fire\": {\n            \"speed\": {\n              \"@type\": \"sequence\",\n              \"#text\": \"0.3\"\n            },\n            \"bullet\": null\n          }\n        }\n      },\n      \"vanish\": null\n    }\n  }\n}";
             if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(_jsonExample);
+
+            static std::string _jsonEditSaveButtonLabel = "Edit";
+
+            if (ImGui::Button(_jsonEditSaveButtonLabel.c_str(), _fullButtonSize)) {
+                
+                if (_jsonEditSaveButtonLabel == "Edit") _jsonEditSaveButtonLabel = "Save";
+                else _jsonEditSaveButtonLabel = "Edit";
+            }
+
+            if (_jsonEditSaveButtonLabel == "Edit") ImGui::BeginDisabled();
+
             ImGui::InputTextMultiline(
                 "##json",
                 _jsonExample,
                 IM_ARRAYSIZE(_jsonExample),
-                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 40),
-                ImGuiInputTextFlags_ReadOnly
+                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 30),
+                ImGuiInputTextFlags_AllowTabInput
             );
+
+            if (_jsonEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
 
             ImGui::EndTabItem();
         }
@@ -376,14 +396,28 @@ void PatternEditor::Editor::drawEditor() {
         if (ImGui::BeginTabItem(" BulletML (XML) ")) {
 
             static char _xmlExample[1024 * 2] = "<?xml version=\"1.0\" ?>\n<!DOCTYPE bulletml SYSTEM \"bulletml.dtd\">\n\n<bulletml type=\"horizontal\"\n          xmlns=\"http://www.asahi-net.or.jp/~cs8k-cyu/bulletml\">\n\n<action label=\"oogi\">\n<fire>\n <direction type=\"absolute\">270-(4+$rank*6)*15/2</direction>\n <bulletRef label=\"seed\"/>\n</fire>\n<repeat><times>4+$rank*6</times>\n<action>\n <fire>\n  <direction type=\"sequence\">15</direction>\n  <bulletRef label=\"seed\"/>\n </fire>\n</action>\n</repeat>\n</action>\n\n<action label=\"top\">\n <repeat> <times>4</times>\n <action>\n  <actionRef label=\"oogi\"/>\n  <wait>40</wait>\n </action>\n </repeat>\n <wait>40</wait>\n <repeat> <times>8</times>\n <action>\n  <actionRef label=\"oogi\"/>\n  <wait>20</wait>\n </action>\n </repeat> \n<wait>30</wait>\n</action>\n\n<bullet label=\"seed\">\n<speed>1.5</speed>\n<action>\n<changeSpeed>\n <speed>0</speed>\n <term>60</term>\n</changeSpeed>\n<wait>60</wait>\n<fire>\n <speed>0.75</speed>\n <bullet/>\n</fire>\n<repeat><times>4+$rank*4</times>\n<action>\n <fire>\n  <speed type=\"sequence\">0.3</speed>\n  <bullet/>\n </fire>\n</action>\n</repeat>\n<vanish/>\n</action>\n</bullet>\n\n</bulletml>";
+
             if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(_xmlExample);
+            
+            static std::string _xmlEditSaveButtonLabel = "Edit";
+
+            if (ImGui::Button(_xmlEditSaveButtonLabel.c_str(), _fullButtonSize)) {
+                
+                if (_xmlEditSaveButtonLabel == "Edit") _xmlEditSaveButtonLabel = "Save";
+                else _xmlEditSaveButtonLabel = "Edit";
+            }
+
+            if (_xmlEditSaveButtonLabel == "Edit") ImGui::BeginDisabled();
+
             ImGui::InputTextMultiline(
                 "##bulletml",
                 _xmlExample,
                 IM_ARRAYSIZE(_xmlExample),
-                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 40),
-                ImGuiInputTextFlags_ReadOnly
+                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 30),
+                ImGuiInputTextFlags_AllowTabInput
             );
+
+            if (_xmlEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
 
             ImGui::EndTabItem();
         }
@@ -398,7 +432,7 @@ void PatternEditor::Editor::draw() {
     ImGui::PushFont(editorFont);
     dockspaceSetup();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     ImGui::Begin("Pattern Editor", NULL, ImGuiWindowFlags_MenuBar);
     

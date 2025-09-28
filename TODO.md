@@ -1,9 +1,8 @@
 - [ ] Editor
-    - [ ] Bullet spawner
+    - [ ] Bullet manager (spawner)
     - [ ] Bullet
         - [ ] Bullet instance pool
 - [ ] Save/Load patterns from json files
 - [ ] Convert BulletML patterns
-- [ ] Export Pattern as BulletML xml pattern
 - [ ] Add a loading warn on HTML on web builds (it's slow to download .data and .wasm files from gh-pages)
 - [ ] Slowdown features (when reach X bullets on screen, gradually reduce the deltaTimeScale to Y)
