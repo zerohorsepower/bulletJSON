@@ -13,11 +13,11 @@ namespace PatternEditor {
 
         // #### General
         inline float deltaTime { GetFrameTime() }, deltaTimeScale { 1.0f };
-        inline bool isPaused { false }, drawFPS { true }, isFullscreen { false }, isPerformanceMode { false };
+        inline bool isPaused { false }, drawFPS { true }, isFullscreen { false }, isPerformanceMode { false }, isEditingJSON { false };
         inline int textureFilter { TEXTURE_FILTER_POINT }, fpsLimit { 99999 };
         
         // #### Game Logic
-        inline int rank { 1 };
+        inline float rank { 0.0f };
         inline bool enableSlowdown { false };
         inline int bulletsToSlowdown { 10000 };
         inline float targetSlowdown { 0.5f };

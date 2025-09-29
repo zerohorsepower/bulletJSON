@@ -19,6 +19,12 @@ PatternEditor::Editor::Editor() {
 
     setupImGuiStyle();
 
+    // TextEditor
+    jsonEditor.SetLanguageDefinition(jsonEditorLang);
+	jsonEditor.SetPalette(TextEditor::GetDarkPalette());
+    jsonEditor.SetTabSize(2);
+    jsonEditor.SetText(jsonExample);
+
 };
 
 void PatternEditor::Editor::setupImGuiStyle() {
@@ -94,24 +100,29 @@ void PatternEditor::Editor::ImGuiHelpMarker(const char* desc) {
 void PatternEditor::Editor::dockspaceSetup() {
 
     // DockSpace setup
-    ImGuiID _dockspaceId = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_NoUndocking);
+    ImGuiID _mainDockspaceId = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_NoUndocking);
     static bool _initDockspace = true;
-    ImGuiID _dockIdLeft, _dockIdRight;
+    ImGuiID _dockIdLeft, _dockIdGame, _dockIdSettings, _dockIdLeftBottom;
     if (_initDockspace) {
         _initDockspace = false;
-        ImGui::DockBuilderRemoveNode(_dockspaceId);
-        ImGui::DockBuilderAddNode(_dockspaceId);
-        ImGui::DockBuilderSetNodeSize(_dockspaceId, ImGui::GetMainViewport()->Size);
+        ImGui::DockBuilderRemoveNode(_mainDockspaceId);
+        ImGui::DockBuilderAddNode(_mainDockspaceId);
+        ImGui::DockBuilderSetNodeSize(_mainDockspaceId, ImGui::GetMainViewport()->Size);
 
-    	ImGui::DockBuilderSplitNode(_dockspaceId, ImGuiDir_Left, 0.4f, &_dockIdLeft, &_dockIdRight);
-        ImGui::DockBuilderDockWindow("Pattern Editor", _dockIdLeft);
-        ImGui::DockBuilderDockWindow("Game", _dockIdRight);
+    	ImGui::DockBuilderSplitNode(_mainDockspaceId, ImGuiDir_Left, 0.43f, &_dockIdLeft, &_dockIdGame);
+        ImGui::DockBuilderDockWindow("Game", _dockIdGame);
 
-        ImGui::DockBuilderFinish(_dockspaceId);
+        ImGui::DockBuilderSplitNode(_dockIdLeft, ImGuiDir_Up, 0.23f, &_dockIdLeft, &_dockIdLeftBottom);
+
+        ImGui::DockBuilderDockWindow("Settings", _dockIdLeft);
+        ImGui::DockBuilderDockWindow("Visual Editor", _dockIdLeftBottom);
+        ImGui::DockBuilderDockWindow("JSON Editor", _dockIdLeftBottom);
+
+        ImGui::DockBuilderFinish(_mainDockspaceId);
     }
 }
 
-void PatternEditor::Editor::drawMenuBar() {
+void PatternEditor::Editor::drawSettingsMenuBar() {
 
     if (ImGui::BeginMenuBar()) {
 
@@ -301,7 +312,7 @@ void PatternEditor::Editor::drawMenuBar() {
     }
 }
 
-void PatternEditor::Editor::drawMainEditorSettings() {
+void PatternEditor::Editor::drawEditorSettings() {
 
     float _defaultItemWidth = ImGui::CalcItemWidth();
     static int _currentPattern = 0;
@@ -322,7 +333,7 @@ void PatternEditor::Editor::drawMainEditorSettings() {
     ImGui::Text("RANK: ");
     ImGui::SameLine();
     ImGui::SetNextItemWidth(_defaultItemWidth + 126);
-    ImGui::SliderInt("##rank", &Global::rank, 1, 5);
+    ImGui::SliderFloat("##rank", &Global::rank, 0.0f, 1.0f);
 
     ImGui::Text("SLOWDOWN: ");
     ImGui::SameLine();
@@ -346,81 +357,148 @@ void PatternEditor::Editor::drawMainEditorSettings() {
 
     if (!Global::enableSlowdown) ImGui::EndDisabled();
 
-    ImGui::NewLine();
-
 }
 
-void PatternEditor::Editor::drawEditor() {
+void PatternEditor::Editor::drawEditorVisual() {
+
+    ImGui::NewLine();
+    ImGui::Text("The Visual editor options will be here...");
+}
+
+void PatternEditor::Editor::drawEditorJSON() {
+
+    // Menu Bar
+    if (ImGui::BeginMenuBar()) {
+
+        if (ImGui::BeginMenu("Edit")) {
+            bool _readOnly = jsonEditor.IsReadOnly();
+
+            if (ImGui::MenuItem("Undo", "Ctrl-Z", nullptr, !_readOnly && jsonEditor.CanUndo()))                 jsonEditor.Undo();
+            if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, !_readOnly && jsonEditor.CanRedo()))
+                jsonEditor.Redo();
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Copy", "Ctrl-C", nullptr, jsonEditor.HasSelection()))
+                jsonEditor.Copy();
+            if (ImGui::MenuItem("Cut", "Ctrl-X", nullptr, !_readOnly && jsonEditor.HasSelection()))
+                jsonEditor.Cut();
+            if (ImGui::MenuItem("Delete", "Del", nullptr, !_readOnly && jsonEditor.HasSelection()))
+                jsonEditor.Delete();
+            if (ImGui::MenuItem("Paste", "Ctrl-V", nullptr, !_readOnly && ImGui::GetClipboardText() != nullptr))
+                jsonEditor.Paste();
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Select all", "Ctrl-A"))
+                jsonEditor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(jsonEditor.GetTotalLines(), 0));
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Clipboard")) {
+
+            if (ImGui::MenuItem("Copy to Clipboard"))
+                ImGui::SetClipboardText(jsonExample);
+            if (ImGui::MenuItem("Copy as STRING to Clipboard"))
+                ImGui::SetClipboardText(jsonExample);
+            
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("View")) {
+
+            if (ImGui::MenuItem("Dark palette"))
+                jsonEditor.SetPalette(TextEditor::GetDarkPalette());
+            if (ImGui::MenuItem("Light palette"))
+                jsonEditor.SetPalette(TextEditor::GetLightPalette());
+            if (ImGui::MenuItem("Retro blue palette"))
+                jsonEditor.SetPalette(TextEditor::GetRetroBluePalette());
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMenuBar();
+    }
 
     static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
-    drawMainEditorSettings();
 
-    if (ImGui::BeginTabBar("Editor", ImGuiTabBarFlags_DrawSelectedOverline)) {
+    //if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(jsonExample);
+    //if (ImGui::Button("Copy as STRING to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(jsonExample);
 
-        if (ImGui::BeginTabItem(" Editor ")) {
+    static std::string _jsonEditSaveButtonLabel = "Edit";
+
+    if (ImGui::Button(_jsonEditSaveButtonLabel.c_str(), _fullButtonSize)) {
+        
+        if (_jsonEditSaveButtonLabel == "Edit") {
+
+            _jsonEditSaveButtonLabel = "Save";
+            Global::isEditingJSON = true;
+        } else {
             
-            ImGui::NewLine();
-            ImGui::Text("Pattern editor options will be here...");
+            _jsonEditSaveButtonLabel = "Edit";
+            Global::isEditingJSON = false;
 
-            ImGui::EndTabItem();
+            auto textToSave = jsonEditor.GetText();
+            /// save text....
         }
-
-        if (ImGui::BeginTabItem(" Json ")) {
-            
-            static char _jsonExample[1024 * 2] = "{\n  \"@type\": \"horizontal\",\n  \"action\": [\n    {\n      \"@label\": \"oogi\",\n      \"fire\": {\n        \"direction\": {\n          \"@type\": \"absolute\",\n          \"#text\": \"270-(4+$rank*6)*15/2\"\n        },\n        \"bulletRef\": {\n          \"@label\": \"seed\"\n        }\n      },\n      \"repeat\": {\n        \"times\": \"4+$rank*6\",\n        \"action\": {\n          \"fire\": {\n            \"direction\": {\n              \"@type\": \"sequence\",\n              \"#text\": \"15\"\n            },\n            \"bulletRef\": {\n              \"@label\": \"seed\"\n            }\n          }\n        }\n      }\n    },\n    {\n      \"@label\": \"top\",\n      \"repeat\": [\n        {\n          \"times\": \"4\",\n          \"action\": {\n            \"actionRef\": {\n              \"@label\": \"oogi\"\n            },\n            \"wait\": \"40\"\n          }\n        },\n        {\n          \"times\": \"8\",\n          \"action\": {\n            \"actionRef\": {\n              \"@label\": \"oogi\"\n            },\n            \"wait\": \"20\"\n          }\n        }\n      ],\n      \"wait\": [\n        \"40\",\n        \"30\"\n      ]\n    }\n  ],\n  \"bullet\": {\n    \"@label\": \"seed\",\n    \"speed\": \"1.5\",\n    \"action\": {\n      \"changeSpeed\": {\n        \"speed\": \"0\",\n        \"term\": \"60\"\n      },\n      \"wait\": \"60\",\n      \"fire\": {\n        \"speed\": \"0.75\",\n        \"bullet\": null\n      },\n      \"repeat\": {\n        \"times\": \"4+$rank*4\",\n        \"action\": {\n          \"fire\": {\n            \"speed\": {\n              \"@type\": \"sequence\",\n              \"#text\": \"0.3\"\n            },\n            \"bullet\": null\n          }\n        }\n      },\n      \"vanish\": null\n    }\n  }\n}";
-            if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(_jsonExample);
-
-            static std::string _jsonEditSaveButtonLabel = "Edit";
-
-            if (ImGui::Button(_jsonEditSaveButtonLabel.c_str(), _fullButtonSize)) {
-                
-                if (_jsonEditSaveButtonLabel == "Edit") _jsonEditSaveButtonLabel = "Save";
-                else _jsonEditSaveButtonLabel = "Edit";
-            }
-
-            if (_jsonEditSaveButtonLabel == "Edit") ImGui::BeginDisabled();
-
-            ImGui::InputTextMultiline(
-                "##json",
-                _jsonExample,
-                IM_ARRAYSIZE(_jsonExample),
-                ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * ImGui::GetWindowHeight() * 0.018f),
-                ImGuiInputTextFlags_AllowTabInput
-            );
-
-            if (_jsonEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
-
-            ImGui::EndTabItem();
-        }
-
-        ImGui::EndTabBar();
     }
+
+    bool _editorReadOnly = false;
+    if (_jsonEditSaveButtonLabel == "Edit") {
+        
+        _editorReadOnly = true;
+        ImGui::BeginDisabled();
+    }
+
+    jsonEditor.SetReadOnly(_editorReadOnly);
+    jsonEditor.Render("JSON Editor", {}, true);
+
+    if (_jsonEditSaveButtonLabel == "Save") Global::isEditingJSON = true;
+    else Global::isEditingJSON = false;
+
+    if (_jsonEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
 }
 
 void PatternEditor::Editor::draw() {
 
+    // ---- Setup
     rlImGuiBegin();
     ImGui::PushFont(editorFont);
     dockspaceSetup();
 
     //ImGui::ShowDemoWindow();
 
-    ImGui::Begin("Pattern Editor", NULL, ImGuiWindowFlags_MenuBar);
-    
+    // ---- Settings
+    ImGui::Begin("Settings", NULL, ImGuiWindowFlags_MenuBar);
 
-        drawMenuBar();
-        drawEditor();
+        drawSettingsMenuBar();
+        drawEditorSettings();
 
     ImGui::End();
 
+    // ---- Visual Editor
+    ImGui::Begin("Visual Editor");
+
+        drawEditorVisual();
+    
+    ImGui::End();
+
+    // ---- JSON Editor
+    ImGui::Begin("JSON Editor", NULL, ImGuiWindowFlags_MenuBar);
+
+        drawEditorJSON();
+
+    ImGui::End();
+
+    // ---- Game
     ImGui::Begin("Game");
         
         //ImGui::Image((ImTextureID) PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture.id, {200, 200});
 
         if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
-    
-    
+
     ImGui::End();
+
     ImGui::PopFont();
     rlImGuiEnd();
 };

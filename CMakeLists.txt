@@ -55,6 +55,7 @@ include_directories(${LIB_DIRECTORY}/raylib/src)
 include_directories(${LIB_DIRECTORY}/json)
 include_directories(${LIB_DIRECTORY}/imgui)
 include_directories(${LIB_DIRECTORY}/rlimgui)
+include_directories(${LIB_DIRECTORY}/ImGuiColorTextEdit)
 
 # Add all source files
 file(
@@ -93,11 +94,16 @@ add_library(imgui STATIC ${IMGUI_FILES})
 file(GLOB RLIMGUI_FILES "lib/rlimgui/*.h" "lib/rlimgui/*.cpp")
 add_library(rlImGui STATIC ${RLIMGUI_FILES})
 
+# ImGuiColorTextEdit
+file(GLOB ImGuiColorTextEdit_FILES "lib/ImGuiColorTextEdit/*.h" "lib/ImGuiColorTextEdit/*.cpp")
+add_library(ImGuiColorTextEdit STATIC ${ImGuiColorTextEdit_FILES})
+
 # Link libraries
 target_link_libraries(${PROJECT_NAME} raylib)
 # target_link_libraries(${PROJECT_NAME} json)
 target_link_libraries(${PROJECT_NAME} imgui)
 target_link_libraries(${PROJECT_NAME} rlImGui)
+target_link_libraries(${PROJECT_NAME} ImGuiColorTextEdit)
 
 ##########################################################################################
 # Web Build Config
