@@ -25,7 +25,7 @@ $ cmake -B build
 $ cmake --build build
 
 # Running
-$ ./final-builds/Linux/BulletHellPatternEditor
+$ ./final-builds/Linux/BulletJSONPatternEditor
 ```
 
 Build for Web:
@@ -36,7 +36,7 @@ $ cmake --build build
 
 # Running
 $ cd ./final-builds/Web
-$ python3 -m http.server 1337 # access http://localhost:1337/BulletHellPatternEditor.html on any web browser
+$ python3 -m http.server 1337 # access http://localhost:1337/BulletJSONPatternEditor.html on any web browser
 ```
 
 Build for Windows:
@@ -45,7 +45,7 @@ $ cmake -B build -DCMAKE_TOOLCHAIN_FILE=toolchain-mingw64.cmake
 $ cmake --build build
 
 # Running
-$ wine ./final-builds/Windows/BulletHellPatternEditor.exe
+$ wine ./final-builds/Windows/BulletJSONPatternEditor.exe
 ```
 
 ## On Windows

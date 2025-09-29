@@ -481,34 +481,37 @@ void PatternEditor::Editor::draw() {
     //ImGui::ShowDemoWindow();
 
     // ---- Settings
-    ImGui::Begin("Settings", NULL, ImGuiWindowFlags_MenuBar);
+    if (ImGui::Begin("Settings", NULL, ImGuiWindowFlags_MenuBar)) {
 
         drawSettingsMenuBar();
         drawEditorSettings();
 
+    }
     ImGui::End();
 
     // ---- Visual Editor
-    ImGui::Begin("Visual Editor");
+    if (ImGui::Begin("Visual Editor")) {
 
         drawEditorVisual();
     
+    }
     ImGui::End();
 
     // ---- JSON Editor
-    ImGui::Begin("JSON Editor", NULL, ImGuiWindowFlags_MenuBar);
+    if (ImGui::Begin("JSON Editor", NULL, ImGuiWindowFlags_MenuBar)) {
 
         drawEditorJSON();
-
+    }
     ImGui::End();
 
     // ---- Game
-    ImGui::Begin("Game");
+    if (ImGui::Begin("Game")) {
         
         //ImGui::Image((ImTextureID) PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture.id, {200, 200});
 
         if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
 
+    }
     ImGui::End();
 
     ImGui::PopFont();
