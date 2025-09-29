@@ -11,10 +11,10 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
-build/
-final-builds/
-cmake-build-*/
-.cache/
+*/build/
+*/final-builds/
+*/cmake-build-*/
+*/.cache/*
 
 # Prerequisites
 *.d
@@ -51,10 +51,6 @@ cmake-build-*/
 
 # ImGui
 imgui.ini
-
-# Texture Page Generator
-node_modules/
-package-lock.json
 
 # VSCode
 .vscode
