@@ -1,0 +1,2 @@
+Last commit: 0105acf1bfba22e883688e5b9ffb1af0536739e2 (20/06/2025)
+https://github.com/raylib-extras/rlImGui/commit/0105acf1bfba22e883688e5b9ffb1af0536739e2

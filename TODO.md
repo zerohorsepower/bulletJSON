@@ -1,8 +1,11 @@
-- [ ] Editor
-    - [ ] Bullet manager (spawner)
-    - [ ] Bullet
-        - [ ] Bullet instance pool
-- [ ] Save/Load patterns from json files
-- [ ] Convert BulletML patterns
 - [ ] Add a loading warn on HTML on web builds (it's slow to download .data and .wasm files from gh-pages)
-- [ ] Slowdown features (when reach X bullets on screen, gradually reduce the deltaTimeScale to Y)
+
+- [ ] Editor
+    - [ ] Save/Load patterns from json files
+    - [ ] Import BulletML patterns
+    - [ ] Slowdown features (when reach X bullets on screen, gradually reduce the deltaTimeScale to Y)
+    - [ ] Pixel Perfect Collision check
+    - [ ] Draw the pattern execution sequence in a small simplified indented graph (e.g: Action X -> Fire Y (Bullet Z) -> Fire A (Bullet B) -> End)
+
+- [ ] BulletJSON
+    - [ ] Bullet instance pool

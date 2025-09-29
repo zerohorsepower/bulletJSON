@@ -1,0 +1,3 @@
+Version: 1.92.4 WIP
+Last commit: 3d937beb628ac1f39d32fde21f35c730cbfe6dcf (25/09/2025)
+https://github.com/ocornut/imgui/commit/3d937beb628ac1f39d32fde21f35c730cbfe6dcf
