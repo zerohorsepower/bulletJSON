@@ -32,17 +32,14 @@ void PatternEditor::GameManager::update() {
     Global::deltaTime = GetFrameTime() * Global::deltaTimeScale;
 
     // -- performance mode
-    if (IsKeyPressed(KEY_SPACE)) {
-
-        if (!Global::isEditingJSON || Global::isPerformanceMode) Global::isPerformanceMode = !Global::isPerformanceMode;
-    }
+    if (IsKeyPressed(KEY_SPACE) && Global::isPerformanceMode) Global::isPerformanceMode = false;
     // -- end performance mode
 
     // -- ship movement
     float _xInput = (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) - (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT));
     float _yInput = (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) - (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP));
 
-    if ((_xInput != 0 || _yInput != 0) && !Global::isEditingJSON) {
+    if ((_xInput != 0 || _yInput != 0) && (Global::isGameFocused | Global::isPerformanceMode)) {
 
         float _moveDirection = PointDirection(Vector2 {0, 0}, Vector2 {_xInput, _yInput});
 

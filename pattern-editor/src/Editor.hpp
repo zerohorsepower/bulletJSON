@@ -24,7 +24,7 @@ namespace PatternEditor {
             void drawSettingsMenuBar();
             void drawEditorSettings();
             void drawEditorJSON();
-            void drawEditorVisual();
+            void drawEditorNode();
             
 
         public:

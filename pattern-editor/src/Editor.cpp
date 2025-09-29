@@ -2,6 +2,7 @@
 #include "GameManager.hpp"
 #include "Global.hpp"
 #include "imgui_internal.h"
+#include "imnodes.h"
 #include "raylib.h"
 #include "imgui.h"
 #include "rlImGui.h"
@@ -18,6 +19,9 @@ PatternEditor::Editor::Editor() {
     _io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     setupImGuiStyle();
+
+    // ImNodes setup
+    ImNodes::CreateContext();
 
     // TextEditor
     jsonEditor.SetLanguageDefinition(jsonEditorLang);
@@ -115,7 +119,7 @@ void PatternEditor::Editor::dockspaceSetup() {
         ImGui::DockBuilderSplitNode(_dockIdLeft, ImGuiDir_Up, 0.27f, &_dockIdLeft, &_dockIdLeftBottom);
 
         ImGui::DockBuilderDockWindow("Settings", _dockIdLeft);
-        ImGui::DockBuilderDockWindow("Visual Editor", _dockIdLeftBottom);
+        ImGui::DockBuilderDockWindow("Node Editor", _dockIdLeftBottom);
         ImGui::DockBuilderDockWindow("JSON Editor", _dockIdLeftBottom);
 
         ImGui::DockBuilderFinish(_mainDockspaceId);
@@ -371,10 +375,59 @@ void PatternEditor::Editor::drawEditorSettings() {
 
 }
 
-void PatternEditor::Editor::drawEditorVisual() {
+void PatternEditor::Editor::drawEditorNode() {
 
-    ImGui::NewLine();
-    ImGui::Text("The Visual editor options will be here...");
+    static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
+    ImGui::Button("Save", _fullButtonSize);
+
+    ImNodes::BeginNodeEditor();
+
+        // temp
+        static const int _hardcodedNodeId = 1;
+        ImNodes::BeginNode(_hardcodedNodeId);
+
+        ImNodes::BeginNodeTitleBar();
+        ImGui::TextUnformatted("Node 1");
+        ImNodes::EndNodeTitleBar();
+        
+        static const int _outputAttrId = 11;
+        ImNodes::BeginOutputAttribute(_outputAttrId);
+        // in between Begin|EndAttribute calls, you can call ImGui
+        // UI functions
+        ImGui::Text("attr with output");
+        ImNodes::EndOutputAttribute();
+
+        ImNodes::EndNode();
+
+        static const int _hardcodedNodeId2 = 2;
+        ImNodes::BeginNode(_hardcodedNodeId2);
+
+        ImNodes::BeginNodeTitleBar();
+        ImGui::TextUnformatted("Node 2");
+        ImNodes::EndNodeTitleBar();
+        
+        static const int _inputAttrId = 22;
+        ImNodes::BeginInputAttribute(_inputAttrId);
+        // in between Begin|EndAttribute calls, you can call ImGui
+        // UI functions
+        ImGui::Text("attr with input");
+        ImNodes::EndInputAttribute();
+
+        ImNodes::EndNode();
+
+        static bool _nodePositionInit = true;
+        if (_nodePositionInit) {
+            
+            _nodePositionInit = false;
+            ImNodes::SetNodeEditorSpacePos(1, { 100, 300 });
+            ImNodes::SetNodeEditorSpacePos(2, { 600, 400 });
+        }
+        ImNodes::Link(33, 11, 22);
+
+        // end temp
+
+        ImNodes::MiniMap(0.2f, ImNodesMiniMapLocation_TopRight);
+    ImNodes::EndNodeEditor();
 }
 
 void PatternEditor::Editor::drawEditorJSON() {
@@ -433,42 +486,10 @@ void PatternEditor::Editor::drawEditorJSON() {
     }
 
     static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
-
-    //if (ImGui::Button("Copy to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(jsonExample);
-    //if (ImGui::Button("Copy as STRING to Clipboard", _fullButtonSize)) ImGui::SetClipboardText(jsonExample);
-
     static std::string _jsonEditSaveButtonLabel = "Edit";
+    ImGui::Button("Save", _fullButtonSize);
 
-    if (ImGui::Button(_jsonEditSaveButtonLabel.c_str(), _fullButtonSize)) {
-        
-        if (_jsonEditSaveButtonLabel == "Edit") {
-
-            _jsonEditSaveButtonLabel = "Save";
-            Global::isEditingJSON = true;
-        } else {
-            
-            _jsonEditSaveButtonLabel = "Edit";
-            Global::isEditingJSON = false;
-
-            auto textToSave = jsonEditor.GetText();
-            /// save text....
-        }
-    }
-
-    bool _editorReadOnly = false;
-    if (_jsonEditSaveButtonLabel == "Edit") {
-        
-        _editorReadOnly = true;
-        ImGui::BeginDisabled();
-    }
-
-    jsonEditor.SetReadOnly(_editorReadOnly);
     jsonEditor.Render("JSON Editor", {}, true);
-
-    if (_jsonEditSaveButtonLabel == "Save") Global::isEditingJSON = true;
-    else Global::isEditingJSON = false;
-
-    if (_jsonEditSaveButtonLabel == "Edit") ImGui::EndDisabled();
 }
 
 void PatternEditor::Editor::draw() {
@@ -489,10 +510,10 @@ void PatternEditor::Editor::draw() {
     }
     ImGui::End();
 
-    // ---- Visual Editor
-    if (ImGui::Begin("Visual Editor")) {
+    // ---- Node Editor
+    if (ImGui::Begin("Node Editor")) {
 
-        drawEditorVisual();
+        drawEditorNode();
     
     }
     ImGui::End();
@@ -511,6 +532,9 @@ void PatternEditor::Editor::draw() {
 
         if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
 
+        if (ImGui::IsWindowFocused()) Global::isGameFocused = true;
+        else Global::isGameFocused = false;
+
     }
     ImGui::End();
 
@@ -520,5 +544,6 @@ void PatternEditor::Editor::draw() {
 
 void PatternEditor::Editor::clean() {
 
+    ImNodes::DestroyContext();
     rlImGuiShutdown();
 };
