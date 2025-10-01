@@ -28,6 +28,18 @@ $ cmake --build build
 $ ./final-builds/Linux/BulletJSONPatternEditor
 ```
 
+Profiling build for Linux (gprof):
+```bash
+$ cmake -DCMAKE_CXX_FLAGS=-pg -DCMAKE_EXE_LINKER_FLAGS=-pg -DCMAKE_SHARED_LINKER_FLAGS=-pg -B build/
+$ cmake --build build
+
+# Running
+$ ./final-builds/Linux/BulletJSONPatternEditor
+
+# Generating report
+gprof ./final-builds/Linux/BulletJSONPatternEditor gmon.out > gprof.out
+```
+
 Build for Web:
 ```bash
 $ source ~/emsdk/emsdk_env.fish

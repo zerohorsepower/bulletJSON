@@ -28,6 +28,11 @@ BulletJSON::BulletManager::BulletManager()
 
 void BulletJSON::BulletManager::Update()
 {
+    // TEMP: Reset bullet pool
+    if (IsKeyPressed(KEY_C))
+    {
+        ResetBulletPool();
+    }
 
     // TEMP: Spawn bullets for test
     if (IsKeyDown(KEY_J))
@@ -55,6 +60,9 @@ void BulletJSON::BulletManager::Update()
             UpdateBullet(&bullets[i]);
         }
     }
+
+    // Sort bullets (move disabled to the end)
+    SortBulletPool();
 }
 
 void BulletJSON::BulletManager::Draw(Texture *gameTextureAtlas)
@@ -98,13 +106,7 @@ BulletJSON::Bullet* BulletJSON::BulletManager::CreateBullet()
 
     // Reset bullet attributes
     Bullet *_bullet = &bullets[lastBulletPoolIndex];
-    _bullet->poolId = lastBulletPoolIndex;
     _bullet->disabled = false;
-    _bullet->position = Vector2 {};
-    _bullet->acceleration = Vector2 {};
-    _bullet->direction = 0;
-    _bullet->speed = 0;
-    _bullet->spawnerRef = nullptr;
     _bullet->spriteRef = &sprites[SPRITE_BULLET_1];
 
     lastBulletPoolIndex++;
@@ -132,26 +134,53 @@ void BulletJSON::BulletManager::UpdateBullet(Bullet *bullet)
 void BulletJSON::BulletManager::VanishBullet(Bullet *bullet)
 {
 
-    int _newBulletPoolId = lastBulletPoolIndex - 1; 
-    
     bullet->disabled = true;
-    Bullet _bulletCopy = *bullet;
+}
 
-    // Moving all bullets with index between disabled and last_activated
-    // This basically sort the array to remove the gap from deactivated bullet
-    // Note: This for loop is the most expensive part of the entire bullet pool system
-    // Try to only perform this sort once in every 5 or 10 seconds instead of every time you disable a bullet
-    for (int i = bullet->poolId; i < lastBulletPoolIndex; i++)
+// This moves all disabled bullets to the end of the pool
+// at out of index of "lastBulletPoolIndex"
+// This is being done with a single for loop per frame
+// How it works: It iterate the entire bullet pool until "lastBulletPoolIndex"
+// (everything after that is already disabled).
+// When it identifies a disabled bullet it increment the disabled bullet count,
+// all the next bullet will be copied to (1*disabledBulletCount) back
+// (except other disabled bullets). It will replace all disabled bullets 
+// in the array and also keep all enabled bullets sorted at the spawn order.
+// At the end it will have a couple of duplicated bullets, these bullets are
+// replaced with a copy of a disabled bullets and the "lastBulletPoolIndex"
+// is adjusted in accord.
+void BulletJSON::BulletManager::SortBulletPool()
+{
+
+    int _disabledBulletsCount = 0;
+    for (int i = 0; i < lastBulletPoolIndex; i++)
     {
 
-        bullets[i + 1].poolId--;
-        bullets[i] = bullets[i + 1];
+        if (bullets[i].disabled)
+        {
+
+            _disabledBulletsCount++;
+        } else if (_disabledBulletsCount > 0) {
+
+            bullets[i - _disabledBulletsCount] = bullets[i];
+        }
     }
 
-    // Put the deactivated bullet after the last activated bullet
-    _bulletCopy.poolId = _newBulletPoolId;
-    bullets[_newBulletPoolId] = _bulletCopy;
-    lastBulletPoolIndex--;
+    if (_disabledBulletsCount > 0)
+    {
+
+        Bullet _disabledBullet = Bullet {};
+        for (int i = 0; i < _disabledBulletsCount; i++)
+        {
+
+            // Fill the remaining slots that have duplicated bullets at the end
+            // with a copy of a reseted disabled bullet
+            bullets[lastBulletPoolIndex - 1 - i] = _disabledBullet;
+        }
+
+        lastBulletPoolIndex -= _disabledBulletsCount;
+    }
+
 }
 
 void BulletJSON::BulletManager::ExtendMaxBullets()

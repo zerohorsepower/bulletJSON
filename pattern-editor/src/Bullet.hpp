@@ -17,14 +17,13 @@ namespace BulletJSON {
 
     struct Bullet {
 
-        int poolId;
         Vector2 position;
         Vector2 acceleration; // Amount of pixels to add on position every frame, recalculate if on "changeSpeed" or "changeDirection" actions
-        float speed;
-        float direction;
+        float speed = 0.0f;
+        float direction = 0.0f;
         bool disabled = true;
-        BulletSpawner *spawnerRef;
-        Sprite *spriteRef;
+        BulletSpawner *spawnerRef = nullptr;
+        Sprite *spriteRef = nullptr;
     };
 
     struct BulletSpawner {
@@ -72,6 +71,7 @@ namespace BulletJSON {
             void VanishBullet(Bullet *bullet);
             
             // bullet array managing
+            void SortBulletPool();
             void ExtendMaxBullets();
             void ResetBulletPool();
             int GetBulletCount();
