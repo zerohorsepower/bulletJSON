@@ -8,7 +8,8 @@
 #include "rlImGui.h"
 #include <cstddef>
 
-PatternEditor::Editor::Editor() {
+PatternEditor::Editor::Editor()
+{
 
     // ImGui setup
     rlImGuiSetup(true);
@@ -18,7 +19,7 @@ PatternEditor::Editor::Editor() {
 
     _io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-    setupImGuiStyle();
+    SetupImGuiStyle();
 
     // ImNodes setup
     ImNodes::CreateContext();
@@ -31,7 +32,8 @@ PatternEditor::Editor::Editor() {
 
 };
 
-void PatternEditor::Editor::setupImGuiStyle() {
+void PatternEditor::Editor::SetupImGuiStyle()
+{
 
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_Text]                  = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -86,13 +88,15 @@ void PatternEditor::Editor::setupImGuiStyle() {
     style.Colors[ImGuiCol_ModalWindowDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
-void PatternEditor::Editor::update() {};
+void PatternEditor::Editor::Update() {};
 
 // Helper to display a little (?) mark which shows a tooltip when hovered.
-void PatternEditor::Editor::ImGuiHelpMarker(const char* desc) {
+void PatternEditor::Editor::ImGuiHelpMarker(const char* desc)
+{
 
     ImGui::TextDisabled("(?)");
-    if (ImGui::BeginItemTooltip()) {
+    if (ImGui::BeginItemTooltip())
+    {
 
         ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
         ImGui::TextUnformatted(desc);
@@ -101,13 +105,15 @@ void PatternEditor::Editor::ImGuiHelpMarker(const char* desc) {
     }
 }
 
-void PatternEditor::Editor::dockspaceSetup() {
+void PatternEditor::Editor::DockspaceSetup()
+{
 
     // DockSpace setup
     ImGuiID _mainDockspaceId = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_NoUndocking);
     static bool _initDockspace = true;
     ImGuiID _dockIdLeft, _dockIdGame, _dockIdSettings, _dockIdLeftBottom;
-    if (_initDockspace) {
+    if (_initDockspace)
+    {
         _initDockspace = false;
         ImGui::DockBuilderRemoveNode(_mainDockspaceId);
         ImGui::DockBuilderAddNode(_mainDockspaceId);
@@ -126,63 +132,75 @@ void PatternEditor::Editor::dockspaceSetup() {
     }
 }
 
-void PatternEditor::Editor::drawSettingsMenuBar() {
+void PatternEditor::Editor::DrawSettingsMenuBar()
+{
 
-    if (ImGui::BeginMenuBar()) {
+    if (ImGui::BeginMenuBar())
+    {
 
         static bool _openAbout = false;
-        if (ImGui::BeginMenu("Options")) {
+        if (ImGui::BeginMenu("Options"))
+        {
 
-            if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen)) {
+            if (ImGui::MenuItem("Fullscreen", NULL, Global::isFullscreen))
+            {
                 
                 Global::isFullscreen = !Global::isFullscreen;
                 ToggleBorderlessWindowed();
             }
 
-            if (ImGui::BeginMenu("Texture Filter")) {
+            if (ImGui::BeginMenu("Texture Filter"))
+            {
 
-                if (ImGui::MenuItem("Nearest", NULL, (Global::textureFilter == TEXTURE_FILTER_POINT))) {
+                if (ImGui::MenuItem("Nearest", NULL, (Global::textureFilter == TEXTURE_FILTER_POINT)))
+                {
 
-                    PatternEditor::gameManagerPtr->setTextureFilterAll(TEXTURE_FILTER_POINT);
+                    PatternEditor::gameManagerPtr->SetTextureFilterAll(TEXTURE_FILTER_POINT);
                 }
 
-                if (ImGui::MenuItem("Bilinear", NULL, (Global::textureFilter == TEXTURE_FILTER_BILINEAR))) {
+                if (ImGui::MenuItem("Bilinear", NULL, (Global::textureFilter == TEXTURE_FILTER_BILINEAR)))
+                {
 
-                    PatternEditor::gameManagerPtr->setTextureFilterAll(TEXTURE_FILTER_BILINEAR);
+                    PatternEditor::gameManagerPtr->SetTextureFilterAll(TEXTURE_FILTER_BILINEAR);
                 }
 
                 ImGui::EndMenu();
             }
 
 
-            if (ImGui::BeginMenu("FPS Limit")) {
+            if (ImGui::BeginMenu("FPS Limit"))
+            {
 
-                if (ImGui::MenuItem("No FPS Limit", NULL, (Global::fpsLimit == 99999))) {
+                if (ImGui::MenuItem("No FPS Limit", NULL, (Global::fpsLimit == 99999)))
+                {
 
                     Global::fpsLimit = 99999;
                     SetTargetFPS(99999);
                 }
 
-                if (ImGui::MenuItem("60", NULL, (Global::fpsLimit == 60))) {
+                if (ImGui::MenuItem("60", NULL, (Global::fpsLimit == 60)))
+                {
 
                     Global::fpsLimit = 60;
                     SetTargetFPS(60);
                 }
 
-                if (ImGui::MenuItem("120", NULL, (Global::fpsLimit == 120))) {
+                if (ImGui::MenuItem("120", NULL, (Global::fpsLimit == 120)))
+                {
 
                     Global::fpsLimit = 120;
                     SetTargetFPS(120);
                 }
 
-                if (ImGui::MenuItem("144", NULL, (Global::fpsLimit == 144))) {
+                if (ImGui::MenuItem("144", NULL, (Global::fpsLimit == 144)))
+                {
 
                     Global::fpsLimit = 144;
                     SetTargetFPS(144);
                 }
 
-                if (ImGui::MenuItem("240", NULL, (Global::fpsLimit == 240))) {
-
+                if (ImGui::MenuItem("240", NULL, (Global::fpsLimit == 240)))
+                {
                     Global::fpsLimit = 240;
                     SetTargetFPS(240);
                 }
@@ -193,9 +211,11 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Show FPS & Bullet Count", NULL, Global::drawFPS)) Global::drawFPS = !Global::drawFPS;
+            if (ImGui::MenuItem("Show FPS & Bullet Count", NULL, Global::drawFPS))
+                Global::drawFPS = !Global::drawFPS;
 
-            if (ImGui::MenuItem("Performance Mode", NULL, Global::isPerformanceMode)) Global::isPerformanceMode = !Global::isPerformanceMode;
+            if (ImGui::MenuItem("Performance Mode", NULL, Global::isPerformanceMode))
+                Global::isPerformanceMode = !Global::isPerformanceMode;
             ImGui::SameLine();
             ImGuiHelpMarker("The UI causes a lot of FPS loss, to get maximum FPS you can disable the UI by activating this option.");
 
@@ -208,11 +228,13 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
         if (_openAbout) ImGui::OpenPopup("About");
 
-        if (ImGui::BeginPopupModal("About", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::BeginPopupModal("About", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
 
             ImGui::Text("This project is a Bullet Hell / Danmaku pattern editor, it uses");
             ImGui::SameLine();
-            if(ImGui::TextLinkOpenURL("BulletJSON", "https://github.com/zerohorsepower/bulletJSON/DEFINITION.md")) {
+            if(ImGui::TextLinkOpenURL("BulletJSON", "https://github.com/zerohorsepower/bulletJSON/DEFINITION.md"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://github.com/zerohorsepower/bulletJSON");
@@ -225,7 +247,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
             ImGui::Text("It also supports");
             ImGui::SameLine();
-            if (ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html")) {
+            if (ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html");
@@ -238,7 +261,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
             ImGui::Text("Most pattern examples are from");
             ImGui::SameLine();
-            if(ImGui::TextLinkOpenURL("BulletMLExamples", "https://github.com/dmanning23/BulletMLExamples")) {
+            if(ImGui::TextLinkOpenURL("BulletMLExamples", "https://github.com/dmanning23/BulletMLExamples"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://github.com/dmanning23/BulletMLExamples");
@@ -254,7 +278,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
             ImGui::Text("This project was developed by");
             ImGui::SameLine();
-            if(ImGui::TextLinkOpenURL("zerohorsepower", "https://github.com/zerohorsepower")) {
+            if(ImGui::TextLinkOpenURL("zerohorsepower", "https://github.com/zerohorsepower"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://github.com/zerohorsepower");
@@ -263,7 +288,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
             ImGui::Text("For more information about BulletJSON and its specification, access its");
             ImGui::SameLine();
-            if(ImGui::TextLinkOpenURL("repository", "https://github.com/zerohorsepower/bulletJSON")) {
+            if(ImGui::TextLinkOpenURL("repository", "https://github.com/zerohorsepower/bulletJSON"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://github.com/zerohorsepower/bulletJSON");
@@ -281,7 +307,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
         }
 
         static bool _openHTUModal = false;
-        if (ImGui::BeginMenu("Help")) {
+        if (ImGui::BeginMenu("Help"))
+        {
 
             if (ImGui::MenuItem("How to Use")) _openHTUModal = true;            
             
@@ -290,13 +317,15 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
         if (_openHTUModal) ImGui::OpenPopup("How To Use");
 
-        if (ImGui::BeginPopupModal("How To Use", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::BeginPopupModal("How To Use", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
 
             ImGui::Text("TODO: finish this guide");
 
             ImGui::Text("BulletJSON is a extension of");
             ImGui::SameLine();
-            if (ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html")) {
+            if (ImGui::TextLinkOpenURL("BulletML", "https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html");
@@ -307,7 +336,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
 
             ImGui::Text("For a more detailed documentation, access the");
             ImGui::SameLine();
-            if(ImGui::TextLinkOpenURL("repository", "https://github.com/zerohorsepower/bulletJSON")) {
+            if(ImGui::TextLinkOpenURL("repository", "https://github.com/zerohorsepower/bulletJSON"))
+            {
             
                 #ifdef IS_OS_BUILD_WEB
                     //OpenURL("https://github.com/zerohorsepower/bulletJSON");
@@ -328,7 +358,8 @@ void PatternEditor::Editor::drawSettingsMenuBar() {
     }
 }
 
-void PatternEditor::Editor::drawEditorSettings() {
+void PatternEditor::Editor::DrawEditorSettings()
+{
 
     float _defaultItemWidth = ImGui::CalcItemWidth();
     static int _currentPattern = 0;
@@ -358,7 +389,8 @@ void PatternEditor::Editor::drawEditorSettings() {
     ImGui::Checkbox("##slowdown_check", &Global::enableSlowdown);
     ImGuiSliderFlags _sliderFlags = ImGuiSliderFlags_None;
     
-    if (!Global::enableSlowdown) {
+    if (!Global::enableSlowdown)
+    {
 
         _sliderFlags = ImGuiSliderFlags_ReadOnly;
         ImGui::BeginDisabled();
@@ -375,7 +407,8 @@ void PatternEditor::Editor::drawEditorSettings() {
 
 }
 
-void PatternEditor::Editor::drawEditorNode() {
+void PatternEditor::Editor::DrawEditorNode()
+{
 
     static ImVec2 _fullButtonSize = ImVec2(-FLT_MIN, 0.0f);
     ImGui::Button("Save", _fullButtonSize);
@@ -416,7 +449,8 @@ void PatternEditor::Editor::drawEditorNode() {
         ImNodes::EndNode();
 
         static bool _nodePositionInit = true;
-        if (_nodePositionInit) {
+        if (_nodePositionInit)
+        {
             
             _nodePositionInit = false;
             ImNodes::SetNodeEditorSpacePos(1, { 100, 300 });
@@ -430,15 +464,19 @@ void PatternEditor::Editor::drawEditorNode() {
     ImNodes::EndNodeEditor();
 }
 
-void PatternEditor::Editor::drawEditorJSON() {
+void PatternEditor::Editor::DrawEditorJSON()
+{
 
     // Menu Bar
-    if (ImGui::BeginMenuBar()) {
+    if (ImGui::BeginMenuBar())
+    {
 
-        if (ImGui::BeginMenu("Edit")) {
+        if (ImGui::BeginMenu("Edit"))
+        {
             bool _readOnly = jsonEditor.IsReadOnly();
 
-            if (ImGui::MenuItem("Undo", "Ctrl-Z", nullptr, !_readOnly && jsonEditor.CanUndo()))                 jsonEditor.Undo();
+            if (ImGui::MenuItem("Undo", "Ctrl-Z", nullptr, !_readOnly && jsonEditor.CanUndo()))
+                jsonEditor.Undo();
             if (ImGui::MenuItem("Redo", "Ctrl-Y", nullptr, !_readOnly && jsonEditor.CanRedo()))
                 jsonEditor.Redo();
 
@@ -461,7 +499,8 @@ void PatternEditor::Editor::drawEditorJSON() {
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Clipboard")) {
+        if (ImGui::BeginMenu("Clipboard"))
+        {
 
             if (ImGui::MenuItem("Copy to Clipboard"))
                 ImGui::SetClipboardText(jsonExample);
@@ -471,7 +510,8 @@ void PatternEditor::Editor::drawEditorJSON() {
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("View")) {
+        if (ImGui::BeginMenu("View"))
+        {
 
             if (ImGui::MenuItem("Dark palette"))
                 jsonEditor.SetPalette(TextEditor::GetDarkPalette());
@@ -492,45 +532,51 @@ void PatternEditor::Editor::drawEditorJSON() {
     jsonEditor.Render("JSON Editor", {}, true);
 }
 
-void PatternEditor::Editor::draw() {
+void PatternEditor::Editor::Draw()
+{
 
     // ---- Setup
     rlImGuiBegin();
     ImGui::PushFont(editorFont);
-    dockspaceSetup();
+    DockspaceSetup();
 
     //ImGui::ShowDemoWindow();
 
     // ---- Settings
-    if (ImGui::Begin("Settings", NULL, ImGuiWindowFlags_MenuBar)) {
+    if (ImGui::Begin("Settings", NULL, ImGuiWindowFlags_MenuBar))
+    {
 
-        drawSettingsMenuBar();
-        drawEditorSettings();
+        DrawSettingsMenuBar();
+        DrawEditorSettings();
 
     }
     ImGui::End();
 
     // ---- Node Editor
-    if (ImGui::Begin("Node Editor")) {
+    if (ImGui::Begin("Node Editor"))
+    {
 
-        drawEditorNode();
+        DrawEditorNode();
     
     }
     ImGui::End();
 
     // ---- JSON Editor
-    if (ImGui::Begin("JSON Editor", NULL, ImGuiWindowFlags_MenuBar)) {
+    if (ImGui::Begin("JSON Editor", NULL, ImGuiWindowFlags_MenuBar))
+    {
 
-        drawEditorJSON();
+        DrawEditorJSON();
     }
     ImGui::End();
 
     // ---- Game
-    if (ImGui::Begin("Game")) {
+    if (ImGui::Begin("Game"))
+    {
         
         //ImGui::Image((ImTextureID) PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture.id, {200, 200});
 
-        if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted)) rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
+        if (IsRenderTextureValid(PatternEditor::gameManagerPtr->gameRenderTextureYInverted))
+            rlImGuiImageFit(&PatternEditor::gameManagerPtr->gameRenderTextureYInverted.texture, true);
 
         if (ImGui::IsWindowFocused()) Global::isGameFocused = true;
         else Global::isGameFocused = false;
@@ -542,7 +588,8 @@ void PatternEditor::Editor::draw() {
     rlImGuiEnd();
 };
 
-void PatternEditor::Editor::clean() {
+void PatternEditor::Editor::Clean()
+{
 
     ImNodes::DestroyContext();
     rlImGuiShutdown();

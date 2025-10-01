@@ -17,21 +17,21 @@ namespace PatternEditor {
 
             // ImGui
             void ImGuiHelpMarker(const char* desc);
-            void setupImGuiStyle();
+            void SetupImGuiStyle();
 
             // Widgets
-            void dockspaceSetup();
-            void drawSettingsMenuBar();
-            void drawEditorSettings();
-            void drawEditorJSON();
-            void drawEditorNode();
+            void DockspaceSetup();
+            void DrawSettingsMenuBar();
+            void DrawEditorSettings();
+            void DrawEditorJSON();
+            void DrawEditorNode();
             
 
         public:
             Editor();
-            void update();
-            void draw();
-            void clean();
+            void Update();
+            void Draw();
+            void Clean();
     };
 
 }

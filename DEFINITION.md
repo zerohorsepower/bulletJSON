@@ -11,6 +11,10 @@ TEMP:
 // TODO: add variables that can be access, for example $direction, $speed, etc (mostly for bullet and actions)
 // TODO: add spriteRef bullet attribute, will be the name of a sprite
 // TODO: add spriteRef variable to set the sprite direction (absolute, relative, sequence, sameAsBullet) (important for arrow like bullet sprites)
+// TODO: add color var to bullet
+// TODO: add changeColor action (useful for dancing bullets, can change the color with "acceleration" and sync the dance with the color change (and mostly with the music))
+// TODO: add rotation attribute to bullet (self rotation, useful for arrow like bullets, also useful for make "sprite animation")
+// TODO: add warn time to the laser (the time were it will draw a line to warn before spawn the laser, while in this state, any other action can take effect at the laser, it will apply to the warn line instead (devil blade like))
 
 - Pattern: A list of Bullet Managers
 

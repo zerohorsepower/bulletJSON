@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Bullet.hpp"
 #include "Editor.hpp"
 #include "raylib.h"
 
@@ -10,9 +11,9 @@ namespace PatternEditor {
         friend class Editor;
 
         private:
+            BulletJSON::BulletManager bulletManager;
             Editor editor;
 
-            int baseGameWidth { 800 }, baseGameHeight { 800 };
             RenderTexture gameRenderTexture;
             RenderTexture gameRenderTextureYInverted;
 
@@ -22,15 +23,15 @@ namespace PatternEditor {
             float shipSpeed { 400.0f };
             Rectangle shipSpriteRectangle { 809, 163, 58, 66 };
 
-            void drawGameRenderTexture();
+            void DrawGameRenderTexture();
 
         public:
             GameManager();
-            void update();
-            void draw();
-            void clean();
+            void Update();
+            void Draw();
+            void Clean();
 
-            void setTextureFilterAll(int textureFilter);
+            void SetTextureFilterAll(int textureFilter);
     };
 
     inline GameManager * gameManagerPtr { nullptr };

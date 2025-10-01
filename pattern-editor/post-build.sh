@@ -35,10 +35,10 @@ elif [[ "$OS_BUILD_TYPE" == "Web" ]]; then
     # Case Web and Release build, copy to gh-pages dir
     if [[ "$RELEASE_BUILD_TYPE" == "Release" ]]; then
 
-        cp "./build/$GAME_NAME.html" "$FULL_BUILD_DIR/../../../docs/index.html";
-        cp "./build/$GAME_NAME.js" "$FULL_BUILD_DIR/../../../docs/";
-        cp "./build/$GAME_NAME.wasm" "$FULL_BUILD_DIR/../../../docs/";
-        cp "./build/$GAME_NAME.data" "$FULL_BUILD_DIR/../../../docs/";
+        cp "./build/$GAME_NAME.html" "$FULL_BUILD_DIR/../../../docs/pattern-editor/index.html";
+        cp "./build/$GAME_NAME.js" "$FULL_BUILD_DIR/../../../docs/pattern-editor/";
+        cp "./build/$GAME_NAME.wasm" "$FULL_BUILD_DIR/../../../docs/pattern-editor/";
+        cp "./build/$GAME_NAME.data" "$FULL_BUILD_DIR/../../../docs/pattern-editor/";
 
     fi
 

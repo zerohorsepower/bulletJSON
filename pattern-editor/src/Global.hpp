@@ -3,6 +3,9 @@
 #include "raylib.h"
 #include <string>
 
+#define BASE_GAME_WIDTH 800
+#define BASE_GAME_HEIGHT 800
+
 namespace PatternEditor {
 
     #ifndef GAME_NAME

@@ -7,7 +7,8 @@
     #include <emscripten/emscripten.h>
 #endif
 
-int main() {
+int main()
+{
 
     PatternEditor::Game();
 
@@ -15,7 +16,8 @@ int main() {
 }
 
 // Main function call
-void PatternEditor::Game() {
+void PatternEditor::Game()
+{
 
     PatternEditor::InitGame();
 
@@ -26,7 +28,8 @@ void PatternEditor::Game() {
 }
 
 // Init basic game structure
-void PatternEditor::InitGame() {
+void PatternEditor::InitGame()
+{
 
     // ##### Get Screen Resolution
     InitWindow(400,400, GAME_NAME);
@@ -57,7 +60,8 @@ void PatternEditor::InitGame() {
 };
 
 // Run the game loop
-void PatternEditor::GameLoop() {
+void PatternEditor::GameLoop()
+{
 
     #ifdef IS_OS_BUILD_WEB
     
@@ -65,7 +69,8 @@ void PatternEditor::GameLoop() {
     
     #else
 
-        while (!WindowShouldClose()) {
+        while (!WindowShouldClose())
+        {
 
             GameLoopImplementation();
         }
@@ -73,16 +78,18 @@ void PatternEditor::GameLoop() {
     #endif
 };
 
-void PatternEditor::GameLoopImplementation() {
+void PatternEditor::GameLoopImplementation()
+{
 
-    if (PatternEditor::gameManagerPtr != nullptr) PatternEditor::gameManagerPtr->update();
+    if (PatternEditor::gameManagerPtr != nullptr) PatternEditor::gameManagerPtr->Update();
 }
 
 // Clean and close the game
-void PatternEditor::EndGame() {
+void PatternEditor::EndGame()
+{
 
 
-    if (PatternEditor::gameManagerPtr != nullptr) PatternEditor::gameManagerPtr->clean();
+    if (PatternEditor::gameManagerPtr != nullptr) PatternEditor::gameManagerPtr->Clean();
 
     // Clean assets
 

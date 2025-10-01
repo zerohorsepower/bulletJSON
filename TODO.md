@@ -7,5 +7,6 @@
     - [ ] Pixel Perfect Collision check
     - [ ] Draw the pattern execution sequence in a small simplified indented graph (e.g: Action X -> Fire Y (Bullet Z) -> Fire A (Bullet B) -> End)
 
-- [ ] BulletJSON
-    - [ ] Bullet instance pool
+- [ ] Rename the project to BulletEML (Bullet Extended Markup Language)
+
+- [ ] IMPORTANT: On bullet pool system, on VanishBullet(), instead of re-sort the array every time you vanish a bullet, store the ids in a list and resort only once in every 5 or 10 seconds
