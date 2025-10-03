@@ -20,7 +20,7 @@ namespace BulletJSON {
 
         PatternEditor::Global::Sprite *spriteRef = nullptr;
         float angle = 0;
-        float anglePerSecond = 0;
+        float anglePerFrame = 0;
         bool sameAngleAsBulletDirection = true;
     };
 

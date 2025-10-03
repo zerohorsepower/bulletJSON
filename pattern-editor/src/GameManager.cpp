@@ -31,7 +31,9 @@ PatternEditor::GameManager::GameManager()
 void PatternEditor::GameManager::Update()
 {
 
-    Global::deltaTime = GetFrameTime() * Global::deltaTimeScale;
+    // timer += 1 * GetFrameTime() // will increase 1 every second
+    // timer += 1 * (GetFrameTimer()*60) // will increase 60 every second
+    Global::deltaTime = (GetFrameTime()*60) * Global::deltaTimeScale;
 
     // -- performance mode
     if (IsKeyPressed(KEY_SPACE) && Global::isPerformanceMode) Global::isPerformanceMode = false;
@@ -97,8 +99,8 @@ void PatternEditor::GameManager::DrawGameRenderTexture()
             gameTextureAtlas,
             Global::sprites[Global::SPRITE_PLAYER_SHIP],
             {
-                shipPosition.x + 40,
-                shipPosition.y + 150,
+                shipPosition.x + 40.0f,
+                shipPosition.y + 150.0f,
                 Global::sprites[Global::SPRITE_PLAYER_SHIP].width*0.8f,
                 Global::sprites[Global::SPRITE_PLAYER_SHIP].height*0.8f
             },

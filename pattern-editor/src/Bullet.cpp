@@ -23,13 +23,13 @@ void BulletJSON::BulletManager::Update()
     // TEMP: Spawn bullets for test
     if (IsKeyDown(KEY_J))
     {
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 200; i++)
         {
             Bullet *_bullet = CreateBullet();
 
             _bullet->position = { (float) BASE_GAME_WIDTH/2, (float) BASE_GAME_HEIGHT/2 };
             _bullet->direction = (float) GetRandomValue(0, 359);
-            _bullet->speed = (float) GetRandomValue(1, 200);
+            _bullet->speed = (float) GetRandomValue(1, 500)/100;
 
             _bullet->acceleration.x = _bullet->speed * (cosf(_bullet->direction * DEG2RAD));
             _bullet->acceleration.y = _bullet->speed * (sinf(_bullet->direction * DEG2RAD));
@@ -39,7 +39,7 @@ void BulletJSON::BulletManager::Update()
                     GetRandomValue(PatternEditor::Global::SPRITE_BULLET_1, PatternEditor::Global::SPRITE_BULLET_LASER)
                 ],
                 _bullet->direction,
-                (float) GetRandomValue(-360, 360),
+                (float) GetRandomValue(-15, 15),
                 (bool) GetRandomValue(0, 1)
             };
 
@@ -115,7 +115,7 @@ void BulletJSON::BulletManager::UpdateBullet(Bullet *bullet)
     bullet->position.x += bullet->acceleration.x * PatternEditor::Global::deltaTime;
     bullet->position.y += bullet->acceleration.y * PatternEditor::Global::deltaTime;
 
-    if (!bullet->sprite.sameAngleAsBulletDirection) bullet->sprite.angle += bullet->sprite.anglePerSecond * PatternEditor::Global::deltaTime;
+    if (!bullet->sprite.sameAngleAsBulletDirection) bullet->sprite.angle += bullet->sprite.anglePerFrame * PatternEditor::Global::deltaTime;
 
     int _bulletOffset = std::max(bullet->sprite.spriteRef->width, bullet->sprite.spriteRef->height);
 

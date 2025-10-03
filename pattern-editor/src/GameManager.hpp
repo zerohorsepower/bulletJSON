@@ -20,7 +20,7 @@ namespace PatternEditor {
             Texture gameTextureAtlas;
 
             Vector2 shipPosition { 400, 600 };
-            float shipSpeed { 400.0f };
+            float shipSpeed { 8.0f };
 
             void DrawGameRenderTexture();
 
