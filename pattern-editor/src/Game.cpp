@@ -57,6 +57,28 @@ void PatternEditor::InitGame()
         Global::fpsLimit = 144;
         SetTargetFPS(144);
     #endif
+
+    // Setup sprites map
+    Global::sprites[Global::SPRITE_BACKGROUND] = Global::Sprite { 3, 3, 800, 800 };
+    Global::sprites[Global::SPRITE_PLAYER_SHIP] = Global::Sprite { 155, 809, 58, 66 };
+    Global::sprites[Global::SPRITE_BULLET_SPAWNER] = Global::Sprite { 3, 809, 146, 154 };
+    Global::sprites[Global::SPRITE_BULLET_1] = Global::Sprite { 229, 918, 43, 20 };
+    Global::sprites[Global::SPRITE_BULLET_2] = Global::Sprite { 229, 990, 43, 20 };
+    Global::sprites[Global::SPRITE_BULLET_3] = Global::Sprite { 258, 944, 42, 12 };
+    Global::sprites[Global::SPRITE_BULLET_4] = Global::Sprite { 258, 962, 42, 12 };
+    Global::sprites[Global::SPRITE_BULLET_5] = Global::Sprite { 193, 918, 30, 30 };
+    Global::sprites[Global::SPRITE_BULLET_6] = Global::Sprite { 222, 954, 30, 30 };
+    Global::sprites[Global::SPRITE_BULLET_7] = Global::Sprite { 278, 1004, 16, 16 };
+    Global::sprites[Global::SPRITE_BULLET_8] = Global::Sprite { 300, 1004, 16, 16 };
+    Global::sprites[Global::SPRITE_BULLET_9] = Global::Sprite { 183, 993, 40, 24 };
+    Global::sprites[Global::SPRITE_BULLET_10] = Global::Sprite { 137, 993, 40, 24 };
+    Global::sprites[Global::SPRITE_BULLET_11] = Global::Sprite { 155, 881, 32, 32 };
+    Global::sprites[Global::SPRITE_BULLET_12] = Global::Sprite { 193, 881, 32, 31 };
+    Global::sprites[Global::SPRITE_BULLET_13] = Global::Sprite { 155, 919, 32, 32 };
+    Global::sprites[Global::SPRITE_BULLET_CRISTAL] = Global::Sprite { 3, 993, 128, 20 };
+    Global::sprites[Global::SPRITE_BULLET_LASER] = Global::Sprite { 3, 969, 213, 18 };
+    Global::sprites[Global::SPRITE_LASER_1] = Global::Sprite { 278, 980, 18, 18 };
+    Global::sprites[Global::SPRITE_LASER_2] = Global::Sprite { 302, 980, 18, 18 };
 };
 
 // Run the game loop

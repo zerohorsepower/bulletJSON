@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include "Global.hpp"
 #include <stdlib.h>
 
 // Forward declaration
@@ -13,7 +14,15 @@ namespace BulletJSON {
 
     struct Bullet;
     struct BulletSpawner;
-    typedef Rectangle Sprite;
+    struct BulletSprite;
+
+    struct BulletSprite {
+
+        PatternEditor::Global::Sprite *spriteRef = nullptr;
+        float angle = 0;
+        float anglePerSecond = 0;
+        bool sameAngleAsBulletDirection = true;
+    };
 
     struct Bullet {
 
@@ -23,29 +32,12 @@ namespace BulletJSON {
         float direction = 0.0f;
         bool disabled = true;
         BulletSpawner *spawnerRef = nullptr;
-        Sprite *spriteRef = nullptr;
+        BulletSprite sprite;
     };
 
     struct BulletSpawner {
 
         Vector2 position;
-    };
-
-    enum SpriteList {
-        SPRITE_BULLET_1,
-        SPRITE_BULLET_2,
-        SPRITE_BULLET_3,
-        SPRITE_BULLET_4,
-        SPRITE_BULLET_5,
-        SPRITE_BULLET_6,
-        SPRITE_BULLET_7,
-        SPRITE_BULLET_8,
-        SPRITE_BULLET_9,
-        SPRITE_BULLET_10,
-        SPRITE_BULLET_11,
-        SPRITE_BULLET_12,
-        SPRITE_BULLET_13,
-        SPRITE_COUNT
     };
 
     class BulletManager {
@@ -57,7 +49,6 @@ namespace BulletJSON {
         int screenDisableOffset { 50 };
         
         Bullet *bullets = nullptr;
-        Sprite sprites[SPRITE_COUNT];
 
         private:
             // life-cycle

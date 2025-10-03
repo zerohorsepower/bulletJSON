@@ -15,6 +15,7 @@ TEMP:
 // TODO: add changeColor action (useful for dancing bullets, can change the color with "acceleration" and sync the dance with the color change (and mostly with the music))
 // TODO: add rotation attribute to bullet (self rotation, useful for arrow like bullets, also useful for make "sprite animation")
 // TODO: add warn time to the laser (the time were it will draw a line to warn before spawn the laser, while in this state, any other action can take effect at the laser, it will apply to the warn line instead (devil blade like))
+// TODO: add variable on bullet that indicates that if the sprite angle should match the bullet direction
 
 - Pattern: A list of Bullet Managers
 
@@ -44,7 +45,8 @@ TEMP:
   - actionArray 
 
 
-- Laser // think about laser specs (cuverd lasers too)
+- Laser // think about laser specs (curvy lasers too)
+// TODO: Curvy lasers are basically a string of bullets with a laser sprites (one bullet spawn a lot of pullets on its path to merge the sprites and create a laser, when the driver bullet vanish it will vanish all others spawned by the bullet)
 
 
 - NUMBER: Mathematic Expression

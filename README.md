@@ -12,4 +12,4 @@ A demo project + live editor can be found at gh-pages from this repository, its 
 
 Most pattern examples are from [BulletMLExamples](https://github.com/dmanning23/BulletMLExamples).
 
-The used sprites are from the game DoDonPachi Daiffukatsu, developed by CAVE. All rights reserved.
+The used sprites are from the game DoDonPachi SaiDaiOuJou, developed by CAVE. All rights reserved.

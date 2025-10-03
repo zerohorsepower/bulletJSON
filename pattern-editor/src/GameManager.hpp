@@ -21,7 +21,6 @@ namespace PatternEditor {
 
             Vector2 shipPosition { 400, 600 };
             float shipSpeed { 400.0f };
-            Rectangle shipSpriteRectangle { 809, 163, 58, 66 };
 
             void DrawGameRenderTexture();
 

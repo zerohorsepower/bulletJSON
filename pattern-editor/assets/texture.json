@@ -1,6 +1,7 @@
 {
-  "frames": {
-    "background.png": {
+  "frames": [
+    {
+      "filename": "background",
       "frame": {
         "x": 3,
         "y": 3,
@@ -24,10 +25,11 @@
         "y": 0.5
       }
     },
-    "hibachi.png": {
+    {
+      "filename": "bullet_spawner",
       "frame": {
-        "x": 809,
-        "y": 3,
+        "x": 3,
+        "y": 809,
         "w": 146,
         "h": 154
       },
@@ -48,10 +50,36 @@
         "y": 0.5
       }
     },
-    "ship.png": {
+    {
+      "filename": "bullet_laser",
       "frame": {
-        "x": 809,
-        "y": 163,
+        "x": 3,
+        "y": 969,
+        "w": 213,
+        "h": 18
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 213,
+        "h": 18
+      },
+      "sourceSize": {
+        "w": 213,
+        "h": 18
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "player_ship",
+      "frame": {
+        "x": 155,
+        "y": 809,
         "w": 58,
         "h": 66
       },
@@ -72,11 +100,12 @@
         "y": 0.5
       }
     },
-    "b1-export.png": {
+    {
+      "filename": "bullet_cristal",
       "frame": {
-        "x": 873,
-        "y": 163,
-        "w": 43,
+        "x": 3,
+        "y": 993,
+        "w": 128,
         "h": 20
       },
       "rotated": false,
@@ -84,35 +113,11 @@
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 43,
+        "w": 128,
         "h": 20
       },
       "sourceSize": {
-        "w": 43,
-        "h": 20
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "b2-export.png": {
-      "frame": {
-        "x": 873,
-        "y": 189,
-        "w": 43,
-        "h": 20
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 43,
-        "h": 20
-      },
-      "sourceSize": {
-        "w": 43,
+        "w": 128,
         "h": 20
       },
       "pivot": {
@@ -120,106 +125,11 @@
         "y": 0.5
       }
     },
-    "b3-export.png": {
+    {
+      "filename": "bullet_11",
       "frame": {
-        "x": 873,
-        "y": 215,
-        "w": 42,
-        "h": 12
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 42,
-        "h": 12
-      },
-      "sourceSize": {
-        "w": 42,
-        "h": 12
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "b4-export.png": {
-      "frame": {
-        "x": 873,
-        "y": 233,
-        "w": 42,
-        "h": 12
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 42,
-        "h": 12
-      },
-      "sourceSize": {
-        "w": 42,
-        "h": 12
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "b10-export.png": {
-      "frame": {
-        "x": 809,
-        "y": 235,
-        "w": 40,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 40,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 40,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "b9-export.png": {
-      "frame": {
-        "x": 855,
-        "y": 251,
-        "w": 40,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 40,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 40,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "b11-export.png": {
-      "frame": {
-        "x": 922,
-        "y": 163,
+        "x": 155,
+        "y": 881,
         "w": 32,
         "h": 32
       },
@@ -240,10 +150,36 @@
         "y": 0.5
       }
     },
-    "b12-export.png": {
+    {
+      "filename": "bullet_13",
       "frame": {
-        "x": 922,
-        "y": 201,
+        "x": 155,
+        "y": 919,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "bullet_12",
+      "frame": {
+        "x": 193,
+        "y": 881,
         "w": 32,
         "h": 31
       },
@@ -264,34 +200,61 @@
         "y": 0.5
       }
     },
-    "b13-export.png": {
+    {
+      "filename": "bullet_10",
       "frame": {
-        "x": 921,
-        "y": 238,
-        "w": 32,
-        "h": 32
+        "x": 137,
+        "y": 993,
+        "w": 40,
+        "h": 24
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 32,
-        "h": 32
+        "w": 40,
+        "h": 24
       },
       "sourceSize": {
-        "w": 32,
-        "h": 32
+        "w": 40,
+        "h": 24
       },
       "pivot": {
         "x": 0.5,
         "y": 0.5
       }
     },
-    "b5-export.png": {
+    {
+      "filename": "bullet_9",
       "frame": {
-        "x": 809,
-        "y": 265,
+        "x": 183,
+        "y": 993,
+        "w": 40,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "bullet_5",
+      "frame": {
+        "x": 193,
+        "y": 918,
         "w": 30,
         "h": 30
       },
@@ -312,10 +275,11 @@
         "y": 0.5
       }
     },
-    "b6-export.png": {
+    {
+      "filename": "bullet_6",
       "frame": {
-        "x": 901,
-        "y": 276,
+        "x": 222,
+        "y": 954,
         "w": 30,
         "h": 30
       },
@@ -336,10 +300,161 @@
         "y": 0.5
       }
     },
-    "b7-export.png": {
+    {
+      "filename": "bullet_1",
       "frame": {
-        "x": 937,
-        "y": 276,
+        "x": 229,
+        "y": 918,
+        "w": 43,
+        "h": 20
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 43,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 43,
+        "h": 20
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "bullet_2",
+      "frame": {
+        "x": 229,
+        "y": 990,
+        "w": 43,
+        "h": 20
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 43,
+        "h": 20
+      },
+      "sourceSize": {
+        "w": 43,
+        "h": 20
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "bullet_3",
+      "frame": {
+        "x": 258,
+        "y": 944,
+        "w": 42,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 42,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 42,
+        "h": 12
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "bullet_4",
+      "frame": {
+        "x": 258,
+        "y": 962,
+        "w": 42,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 42,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 42,
+        "h": 12
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "laser_1",
+      "frame": {
+        "x": 278,
+        "y": 980,
+        "w": 18,
+        "h": 18
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 18,
+        "h": 18
+      },
+      "sourceSize": {
+        "w": 18,
+        "h": 18
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "laser_2",
+      "frame": {
+        "x": 302,
+        "y": 980,
+        "w": 18,
+        "h": 18
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 18,
+        "h": 18
+      },
+      "sourceSize": {
+        "w": 18,
+        "h": 18
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "bullet_7",
+      "frame": {
+        "x": 278,
+        "y": 1004,
         "w": 16,
         "h": 16
       },
@@ -360,10 +475,11 @@
         "y": 0.5
       }
     },
-    "b8-export.png": {
+    {
+      "filename": "bullet_8",
       "frame": {
-        "x": 937,
-        "y": 298,
+        "x": 300,
+        "y": 1004,
         "w": 16,
         "h": 16
       },
@@ -384,7 +500,7 @@
         "y": 0.5
       }
     }
-  },
+  ],
   "meta": {
     "app": "http://free-tex-packer.com",
     "version": "0.6.7",

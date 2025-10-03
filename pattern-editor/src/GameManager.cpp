@@ -49,8 +49,16 @@ void PatternEditor::GameManager::Update()
         shipPosition.x += LengthDirX(shipSpeed * Global::deltaTime, _moveDirection);
         shipPosition.y += LengthDirY(shipSpeed * Global::deltaTime, _moveDirection);
 
-        shipPosition.x = Clamp(shipPosition.x, 0 + shipSpriteRectangle.width/2, BASE_GAME_WIDTH - shipSpriteRectangle.width/2);
-        shipPosition.y = Clamp(shipPosition.y, 0 + shipSpriteRectangle.height/2, BASE_GAME_HEIGHT - shipSpriteRectangle.height/2);
+        shipPosition.x = Clamp(
+            shipPosition.x,
+            Global::sprites[Global::SPRITE_PLAYER_SHIP].width*0.5f,
+            BASE_GAME_WIDTH - Global::sprites[Global::SPRITE_PLAYER_SHIP].width*0.5f
+        );
+        shipPosition.y = Clamp(
+            shipPosition.y,
+            Global::sprites[Global::SPRITE_PLAYER_SHIP].height*0.5f,
+            BASE_GAME_HEIGHT - Global::sprites[Global::SPRITE_PLAYER_SHIP].height*0.5f
+        );
     }
     // --- end ship movement
 
@@ -72,8 +80,13 @@ void PatternEditor::GameManager::DrawGameRenderTexture()
         // Draw game background
         DrawTexturePro(
             gameTextureAtlas,
-            { 3, 3, 800, 800 },
-            { 0, 0, 800, 800 },
+            Global::sprites[Global::SPRITE_BACKGROUND],
+            {
+                0,
+                0,
+                Global::sprites[Global::SPRITE_BACKGROUND].width,
+                Global::sprites[Global::SPRITE_BACKGROUND].height
+            },
             { 0, 0 },
             0,
             WHITE
@@ -82,9 +95,17 @@ void PatternEditor::GameManager::DrawGameRenderTexture()
         // Draw ship shadow
         DrawTexturePro(
             gameTextureAtlas,
-            shipSpriteRectangle,
-            { shipPosition.x + 40, shipPosition.y + 150, shipSpriteRectangle.width*0.8f, shipSpriteRectangle.height*0.8f },
-            { shipSpriteRectangle.width/2, shipSpriteRectangle.height/2 },
+            Global::sprites[Global::SPRITE_PLAYER_SHIP],
+            {
+                shipPosition.x + 40,
+                shipPosition.y + 150,
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].width*0.8f,
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].height*0.8f
+            },
+            {
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].width*0.5f,
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].height*0.5f
+            },
             0,
             { 0, 0, 0, 120 }
         );
@@ -92,9 +113,17 @@ void PatternEditor::GameManager::DrawGameRenderTexture()
         // Draw ship
         DrawTexturePro(
             gameTextureAtlas,
-            shipSpriteRectangle,
-            { shipPosition.x, shipPosition.y, shipSpriteRectangle.width, shipSpriteRectangle.height },
-            { shipSpriteRectangle.width/2, shipSpriteRectangle.height/2 },
+            Global::sprites[Global::SPRITE_PLAYER_SHIP],
+            {
+                shipPosition.x,
+                shipPosition.y,
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].width,
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].height
+            },
+            {
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].width*0.5f,
+                Global::sprites[Global::SPRITE_PLAYER_SHIP].height*0.5f
+            },
             0,
             WHITE
         );

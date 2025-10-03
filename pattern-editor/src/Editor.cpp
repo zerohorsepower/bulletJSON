@@ -271,7 +271,7 @@ void PatternEditor::Editor::DrawSettingsMenuBar()
 
             ImGui::NewLine();
 
-            ImGui::TextColored({ 150, 0, 0, 255 }, "The used sprites are from the game DoDonPachi Daiffukatsu, developed by CAVE.");
+            ImGui::TextColored({ 150, 0, 0, 255 }, "The used sprites are from the game DoDonPachi SaiDaiOuJou, developed by CAVE.");
             ImGui::TextColored({ 150, 0, 0, 255 }, "All rights reserved ©.");
 
             ImGui::NewLine();
@@ -557,7 +557,6 @@ void PatternEditor::Editor::Draw()
     {
 
         DrawEditorNode();
-    
     }
     ImGui::End();
 
@@ -580,7 +579,6 @@ void PatternEditor::Editor::Draw()
 
         if (ImGui::IsWindowFocused()) Global::isGameFocused = true;
         else Global::isGameFocused = false;
-
     }
     ImGui::End();
 
